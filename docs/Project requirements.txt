@@ -1,0 +1,76 @@
+Project requirements:
+
+Develop Backpack (save files/links/media)
+	Save to "cloud"
+		Local files
+		Web articles
+		Physical and E books
+		Audio (i.e. podcasts)
+		Video files/links/snippets
+	Access from "cloud"
+		Read functionality
+		Download functionality
+		Share links/media
+	Flag material as relevant to Badge/trailmap/topic/personal goal
+		Set user goals
+		Flag for badging
+		Flag for trailmap
+		Label with topic(s)
+	Artifact collection
+		???? (Client unclear- visual gamified way to incentivize learning and using backpack?)
+	File organization
+		Create structures (i.e. folders)
+		Sort by:
+			Topic
+			Name
+			Date saved, date published
+		Search by label
+	Create UI for
+		Searching
+		Sorting/viewing contents (overall)
+		Viewing/sharing specific files
+		Saving files from a source
+
+Develop Trailmap
+	Visibility/RBAC
+		Customize visibility of roadmap and roadmap items
+		Group management
+		Award/approve progress
+		Approve changes to plan
+			Notify "admin" roles" with changes/progress
+	Manage "trails"
+		Adding/remove elements
+		Edit order of events
+		Add descriptions and notes
+		Add links to specific activities/files
+	View/visualize progress/Roles and competencies (Nice to have)
+	Link events/milestones to backpack items
+	Show related competency topics/activities/labels/categories
+	Develop UI screen and menus
+		Trail overview
+		Trail management
+		Group management/interaction
+		Showing links/materials in roadmap
+
+Develop Badges
+	Badge hierarchy and categories
+		Define requirements for each type/completion amount
+	Social features
+		View competencies/work completed (not trailmap, but individual courses/files) for each badge
+		Share badge progress
+		Customize visibility of badges
+		Search for other badges
+			Similar competencies/"next steps"
+			Search by visible users (default is invisible)
+		Communicate via kudos
+	Badge awarding system:
+		Automatic "nomination" system/tracking
+		Admin "approval" of badge awarding
+	UI:
+		Badge appearance
+		Badge showcase screen
+		Badge details screen
+			Kudos/communications terminal
+			Eligibility vs. awarded vs. in progress views/indicators
+			Next step buttons
+		Similar badges menu
