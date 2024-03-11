@@ -6,6 +6,7 @@ Modules: The main parts of the program that users interact with
 	Backpack:
 		Artifacts: ???? (TODO: Update this after talking with client- gamified collectible?)
 		Item: A file or link saved and accessed by the User
+			Flag: A value (or values) linked to each item to "signal" completion to modules
 		Tag: An identifier used by the program to locate an item
 			Competency: A genaric term for a skillset learned through the different activities. 
 				    An example may be as broad as "prayer" or "foreign language, or as specific as "intercessory prayer" or "learn Mandarin" 
@@ -14,3 +15,4 @@ Modules: The main parts of the program that users interact with
 		Trail: Specific list of things you can do as set by the Missions Organization
 			Milestone: An individual, specific step or activity(ies) you do to complete the trail
 	Badges: A visual indicator of what a User has accomplished and what Competencies they have.
+
