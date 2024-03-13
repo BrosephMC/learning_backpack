@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
-/// Flutter code sample for [BottomNavigationBar].
+void main() => runApp(const LearningBackpackApp());
 
-void main() => runApp(const BottomNavigationBarExampleApp());
-
-class BottomNavigationBarExampleApp extends StatelessWidget {
-  const BottomNavigationBarExampleApp({super.key});
+class LearningBackpackApp extends StatelessWidget {
+  const LearningBackpackApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +27,7 @@ class _BottomNavigationBarExampleState
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Trip Planning and Settings',
-      style: optionStyle,
-    ),
+    ListDemo(),
 
     TrailMapPage(),
 
@@ -64,7 +59,7 @@ class _BottomNavigationBarExampleState
         destinations: const <Widget>[
           NavigationDestination(
             icon: Icon(Icons.travel_explore),
-            label: 'Trip Planning',
+            label: 'Journeys',
             tooltip: '',
           ),
           NavigationDestination(
@@ -105,9 +100,10 @@ class TrailMapPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Text(
-                  "Your Progress",
+                  "Trail Title - 50% Done",
                   style: TextStyle(fontSize: 20),
                 ),
+                Padding(padding: EdgeInsets.all(5.0)),
                 LinearProgressIndicator(
                   value: 0.5,
                   semanticsLabel: 'Linear progress indicator',
@@ -145,7 +141,8 @@ class TrailMapPage extends StatelessWidget {
         body: const TabBarView(
           children: <Widget>[
             Center(
-              child: Text("Language"),
+              // child: Text("Language"),
+              child: DataTableExample(),
             ),
             Center(
               child: Text("People"),
@@ -160,6 +157,55 @@ class TrailMapPage extends StatelessWidget {
               child: Text("Text"),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class DataTableExample extends StatefulWidget {
+  const DataTableExample({super.key});
+
+  @override
+  State<DataTableExample> createState() => _DataTableExampleState();
+}
+
+class _DataTableExampleState extends State<DataTableExample> {
+  static const int numItems = 20;
+  List<bool> selected = List<bool>.generate(numItems, (int index) => false);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: DataTable(
+        columns: const <DataColumn>[
+          DataColumn(
+            label: Text('Number'),
+          ),
+        ],
+        rows: List<DataRow>.generate(
+          numItems,
+          (int index) => DataRow(
+            color: MaterialStateProperty.resolveWith<Color?>(
+                (Set<MaterialState> states) {
+              // All rows will have the same selected color.
+              if (states.contains(MaterialState.selected)) {
+                return Theme.of(context).colorScheme.primary.withOpacity(0.08);
+              }
+              // Even rows will have a grey color.
+              if (index.isEven) {
+                return Colors.grey.withOpacity(0.3);
+              }
+              return null; // Use default value for other states and odd rows.
+            }),
+            cells: <DataCell>[DataCell(Text('Row $index'))],
+            selected: selected[index],
+            onSelectChanged: (bool? value) {
+              setState(() {
+                selected[index] = value!;
+              });
+            },
+          ),
         ),
       ),
     );
@@ -193,6 +239,63 @@ class BackPackPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ListDemo extends StatelessWidget {
+  const ListDemo({super.key});
+
+  // final ListDemoType type;
+
+  @override
+  Widget build(BuildContext context) {
+    // final localizations = GalleryLocalizations.of(context)!;
+    return Scaffold(
+      appBar: AppBar(
+        // automaticallyImplyLeading: false,
+        // title: const Text("title"),
+        title: const Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Journeys - 25% Done",
+                  style: TextStyle(fontSize: 20),
+                ),
+                Padding(padding: EdgeInsets.all(5.0)),
+                CircularProgressIndicator(
+                  value: 0.25,
+                  semanticsLabel: 'Linear progress indicator',
+                  color: Colors.blue,
+                  backgroundColor: Colors.grey,
+                ),
+              ],
+            ),
+          ),
+      ),
+      // body: Scrollbar(
+        body: ListView(
+          restorationId: 'list_demo_list_view',
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          children: [
+            for (int index = 1; index < 21; index++)
+              ListTile(
+                onTap: () {
+                  print("$index was pressed!");
+                },
+                leading: ExcludeSemantics(
+                  child: CircleAvatar(child: Text('$index')),
+                ),
+                title: Text(
+                  index.toString(),
+                ),
+                subtitle: const Text("text"),
+              ),
+          ],
+        ),
+      // ),
     );
   }
 }
