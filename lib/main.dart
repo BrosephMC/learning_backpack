@@ -51,9 +51,9 @@ class _BottomNavigationBarExampleState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('BottomNavigationBar Sample'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('BottomNavigationBar Sample'),
+      // ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -87,20 +87,49 @@ class TrailMapPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 1,
-      length: 3,
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('TabBar Sample'),
+          // title: const Text('TabBar Sample'),
+          title: const Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text(
+                  "Your Progress",
+                  style: TextStyle(fontSize: 20),
+                ),
+                LinearProgressIndicator(
+                  value: 0.5,
+                  semanticsLabel: 'Linear progress indicator',
+                ),
+              ],
+            ),
+          ),
           bottom: const TabBar(
+            isScrollable: true,
+            tabAlignment: TabAlignment.center,
             tabs: <Widget>[
               Tab(
                 icon: Icon(Icons.book),
+                child: Text("Language"),
               ),
               Tab(
                 icon: Icon(Icons.person),
+                child: Text("People"),
               ),
               Tab(
                 icon: Icon(Icons.east),
+                child: Text("Mission"),
+              ),
+              Tab(
+                icon: Icon(Icons.abc),
+                child: Text("Text"),
+              ),
+              Tab(
+                icon: Icon(Icons.abc),
+                child: Text("Text"),
               ),
             ],
           ),
@@ -115,6 +144,12 @@ class TrailMapPage extends StatelessWidget {
             ),
             Center(
               child: Text("Mission"),
+            ),
+            Center(
+              child: Text("Text"),
+            ),
+            Center(
+              child: Text("Text"),
             ),
           ],
         ),
