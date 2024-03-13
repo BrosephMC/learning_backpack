@@ -29,24 +29,20 @@ class _BottomNavigationBarExampleState
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
-    //trail map
+    Text(
+      'Trip Planning and Settings',
+      style: optionStyle,
+    ),
+
     TrailMapPage(),
 
-    //notifications page placeholder
     BackPackPage(),
 
-    //badges page
     Text(
-      'Index 2: Badges',
+      'Badges and Social',
       style: optionStyle,
     ),
   ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,24 +53,36 @@ class _BottomNavigationBarExampleState
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        indicatorColor: Colors.amber,
+        selectedIndex: _selectedIndex,
+        destinations: const <Widget>[
+          NavigationDestination(
+            icon: Icon(Icons.travel_explore),
+            label: 'Trip Planning',
+            tooltip: '',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.map),
             label: 'Trail Map',
+            tooltip: '',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.cases),
+          NavigationDestination(
+            icon: Icon(Icons.shopping_bag),
             label: 'Backpack',
+            tooltip: '',
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.radio_button_unchecked),
             label: 'Badges',
+            tooltip: '',
           ),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
       ),
     );
   }
