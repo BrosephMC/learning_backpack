@@ -33,6 +33,33 @@ List<List<String>> readFromFile(String filePath) {
   return result;
 }
 
+Icon getIconFromWord(String category){
+  if(RegExp("language", caseSensitive: false).hasMatch(category)
+  || RegExp("read", caseSensitive: false).hasMatch(category)
+  || RegExp("word", caseSensitive: false).hasMatch(category)){
+    return const Icon(Icons.menu_book);
+  }
+  if(RegExp("navigation", caseSensitive: false).hasMatch(category)
+  || RegExp("travel", caseSensitive: false).hasMatch(category)){
+    return const Icon(Icons.explore);
+  }
+  if(RegExp("mission", caseSensitive: false).hasMatch(category)){
+    return const Icon(Icons.public);
+  }
+  if(RegExp("faith", caseSensitive: false).hasMatch(category)
+  || RegExp("church", caseSensitive: false).hasMatch(category)){
+    return const Icon(Icons.church);
+  }
+  if(RegExp("food", caseSensitive: false).hasMatch(category)){
+    return const Icon(Icons.fastfood);
+  }
+  if(RegExp("people", caseSensitive: false).hasMatch(category)){
+    return const Icon(Icons.person);
+  } else {
+    return const Icon(Icons.filter_hdr);
+  }
+}
+
 class LearningBackpackApp extends StatelessWidget {
   const LearningBackpackApp({super.key});
 
@@ -238,12 +265,12 @@ class _BottomNavigationBarExampleState
             tooltip: '',
           ),
           NavigationDestination(
-            icon: Icon(Icons.shopping_bag),
+            icon: Icon(Icons.luggage),
             label: 'Backpack',
             tooltip: '',
           ),
           NavigationDestination(
-            icon: Icon(Icons.radio_button_unchecked),
+            icon: Icon(Icons.military_tech),
             label: 'Badges',
             tooltip: '',
           ),
@@ -292,7 +319,7 @@ class TrailMapPage extends StatelessWidget {
             tabs: <Widget>[
               for (int i = 0; i < numSections; i++)
                 Tab(
-                  icon: const Icon(Icons.book),
+                  icon: getIconFromWord(sectionTitles[i]),
                   child: Text(sectionTitles[i])
                 ),
             ],
@@ -312,55 +339,6 @@ class TrailMapPage extends StatelessWidget {
                 )
               ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class DataTableExample extends StatefulWidget {
-  const DataTableExample({super.key});
-
-  @override
-  State<DataTableExample> createState() => _DataTableExampleState();
-}
-
-class _DataTableExampleState extends State<DataTableExample> {
-  static const int numItems = 20;
-  List<bool> selected = List<bool>.generate(numItems, (int index) => false);
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: DataTable(
-        columns: const <DataColumn>[
-          DataColumn(
-            label: Text('Number'),
-          ),
-        ],
-        rows: List<DataRow>.generate(
-          numItems,
-          (int index) => DataRow(
-            color: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-              // All rows will have the same selected color.
-              if (states.contains(MaterialState.selected)) {
-                return Theme.of(context).colorScheme.primary.withOpacity(0.08);
-              }
-              // Even rows will have a grey color.
-              if (index.isEven) {
-                return Colors.grey.withOpacity(0.3);
-              }
-              return null; // Use default value for other states and odd rows.
-            }),
-            cells: <DataCell>[DataCell(Text('Row $index'))],
-            selected: selected[index],
-            onSelectChanged: (bool? value) {
-              setState(() {
-                selected[index] = value!;
-              });
-            },
-          ),
         ),
       ),
     );

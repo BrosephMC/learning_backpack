@@ -1,9 +1,34 @@
-title1
-    task1
-    task2
-    task3
+Learn the Language 📕
+  - Duolingo Chapter 1
+  - Read this book on the language
+  - Duolingo Chapter 2
+    ...
+    ...
+  - Conversation with someone fluent in the language
+  - Write a short story in the language
+  - Share your testimony in the langage
 
-title two 2 dos
-    task number one
-    task 2
-    my third_task
+Know the People 🙋
+  - Read this book on the country
+  - Talk with this missionary
+  - Read this personal anecdote
+  - (If not out of scope) Take this quiz on the culture
+
+Grow in Faith ✝️
+  - Follow this Bible plan preparing you to be a missionary
+  - List of things to pray for about the people you are going to be preaching to
+  - Video series walking through being a missionary / sharing your faith
+
+Prepare for Missions 🌍
+  - Go to bi-annual SIM Conference
+  - Go to training event on [SPECIFIC DATE]
+  - Talk with advisor
+  - Make a specific plan for what you are wanting to do
+  - Find a host church, or multiple, to support you
+  - Learn how to write newsletters
+
+Get Ready for the Food 🍲
+  - Try international dishes at the Taste o fthe Nations event coming up this [DATE]
+  - Learn classic dishes from your country
+  - If interested, cook some dishes from that country
+  - Learn the national customs from your country (e.g., eat with forks? chopsticks? hands?)
