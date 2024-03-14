@@ -33,3 +33,7 @@ This file contains a numbered index of the program's functionalities:
 
 
 2.#.# TrailMap Module
+
+
+
+3.#.# Badges Module
