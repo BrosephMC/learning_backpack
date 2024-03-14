@@ -34,6 +34,9 @@ List<List<String>> readFromFile(String filePath) {
 }
 
 Icon getIconFromWord(String category){
+  if(RegExp("food", caseSensitive: false).hasMatch(category)){
+    return const Icon(Icons.fastfood);
+  }
   if(RegExp("language", caseSensitive: false).hasMatch(category)
   || RegExp("read", caseSensitive: false).hasMatch(category)
   || RegExp("word", caseSensitive: false).hasMatch(category)){
@@ -50,13 +53,11 @@ Icon getIconFromWord(String category){
   || RegExp("church", caseSensitive: false).hasMatch(category)){
     return const Icon(Icons.church);
   }
-  if(RegExp("food", caseSensitive: false).hasMatch(category)){
-    return const Icon(Icons.fastfood);
-  }
   if(RegExp("people", caseSensitive: false).hasMatch(category)){
     return const Icon(Icons.person);
   } else {
     return const Icon(Icons.filter_hdr);
+    // return const Icon(Icons.forest);
   }
 }
 
@@ -67,13 +68,11 @@ class LearningBackpackApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => MyAppState()..setTrailMapFromList(
-<<<<<<< Updated upstream
         // [
         //   [ 'Title 1', 'Task 1.1', 'Task 1.2', 'Task 1.3', 'Task 1.4', 'Task 1.5', 'Task 1.6' ],
         //   [ 'Title 2', 'Task 2.1', 'Task 2.2', 'Task 2.3', 'Surprise, Task 2.7' ]
         // ]
-        readFromFile(p.join(Directory.current.path, 'assets', 'sample.txt')),
-=======
+        // readFromFile(p.join(Directory.current.path, 'assets', 'sample.txt')),
         [
           [ 
             [ 'Language' ],
@@ -153,7 +152,6 @@ class LearningBackpackApp extends StatelessWidget {
             ]
           ]
         ]
->>>>>>> Stashed changes
       ),
       child: const MaterialApp(
         home: BottomNavigationBarExample(),

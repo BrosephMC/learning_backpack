@@ -32,3 +32,7 @@ Get Ready for the Food 🍲
   - Learn classic dishes from your country
   - If interested, cook some dishes from that country
   - Learn the national customs from your country (e.g., eat with forks? chopsticks? hands?)
+
+Other category
+    this is a task
+    and another one
