@@ -1,13 +1,28 @@
 This file describes remaining development tasks for future teams. Update this as necessary.
 
 REQUIRED CLIENT TASKS:
--Add visibility features to Trailmap Trails and Tasks
--Sort Backpack contents: UI undeveloped, but process and protype code are in the "nextDev" folder under "docs"
+-Trailmap:
+	-Add visibility features to Trailmap Trails and Tasks
+	-Add ability to have "groups" of people on the same/multiple trails, with user management options
 
+-Backpack:
+	-Sort Backpack contents: UI undeveloped, but process and protype code are in the "nextDev" folder
+	-Implement a cloud save/download/share functionality
+	-Add a file sharing function (primarily in-app, but using default share services such as text/email works as a secondary)
+	-Have a system for adding tags to backpack items, so they can be sorted, searched, and otherwise categorized by users
+	
+
+-Badges: track learning progress independent of specific "trails" (not implemented, but tab for loading menu/UI is there)
+	-Design the UI and appearance of badges and the terms/hierarchy of how they upgrade with progress
+	-Visibility and privacy settings for badges, including searching for users rith those badges, or trails related to them.
+	-Design a system to detect badge eligibility, track completion level, and lock awarding of badges to admin accounts over a user
+	-Have separate screens for viewing an individual badge's info and a user's collection of badges.
 
 NICE TO HAVE FEATURES:
--
+-A graph/pie chart chowing a user's competencies and skills based upon progress
+-Show related competencies/trails in UI based upon tags
 
 
 EXPANDING FUNCTIONALITY AND SECURITY:
 - Change the path_provider functionality (for saving files in the backpack module) to file_saver for expanded functionality (https://pub.dev/packages/file_saver)
+- Optimize the code for saving/opening/deleting files in the backpack (It's stable and functional, but technically inefficient)
