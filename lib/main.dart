@@ -2,9 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:open_file/open_file.dart';
+import 'dart:io';
+import 'package:path/path.dart' as p;
 
 void main() {
   runApp(const LearningBackpackApp());
+}
+
+List<List<String>> readFromFile(String filePath) {
+  var file = File(filePath);
+  var lines = file.readAsLinesSync();
+
+  List<List<String>> result = [];
+  List<String> currentList = [];
+
+  for (var line in lines) {
+    line = line.trimLeft();
+    if (line.isNotEmpty) {
+      currentList.add(line);
+    } else if (currentList.isNotEmpty) {
+      result.add(List.from(currentList));
+      currentList.clear();
+    }
+  }
+
+  if (currentList.isNotEmpty) {
+    result.add(List.from(currentList));
+  }
+
+  return result;
 }
 
 class LearningBackpackApp extends StatelessWidget {
@@ -14,10 +40,11 @@ class LearningBackpackApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => MyAppState()..setTrailMapFromList(
-        [
-          [ 'Title 1', 'Task 1.1', 'Task 1.2', 'Task 1.3', 'Task 1.4', 'Task 1.5', 'Task 1.6' ],
-          [ 'Title 2', 'Task 2.1', 'Task 2.2', 'Task 2.3', 'Surprise, Task 2.7' ]
-        ]
+        // [
+        //   [ 'Title 1', 'Task 1.1', 'Task 1.2', 'Task 1.3', 'Task 1.4', 'Task 1.5', 'Task 1.6' ],
+        //   [ 'Title 2', 'Task 2.1', 'Task 2.2', 'Task 2.3', 'Surprise, Task 2.7' ]
+        // ]
+        readFromFile(p.join(Directory.current.path, 'assets', 'sample.txt')),
       ),
       child: const MaterialApp(
         home: BottomNavigationBarExample(),
