@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:open_file/open_file.dart';
 
-void main() => runApp(const LearningBackpackApp());
+void main() {
+  runApp(const LearningBackpackApp());
+}
 
 class LearningBackpackApp extends StatelessWidget {
   const LearningBackpackApp({super.key});
@@ -11,7 +13,12 @@ class LearningBackpackApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
+      create: (context) => MyAppState()..setTrailMapFromList(
+        [
+          [ 'Title 1', 'Task 1.1', 'Task 1.2', 'Task 1.3', 'Task 1.4', 'Task 1.5', 'Task 1.6' ],
+          [ 'Title 2', 'Task 2.1', 'Task 2.2', 'Task 2.3', 'Surprise, Task 2.7' ]
+        ]
+      ),
       child: const MaterialApp(
         home: BottomNavigationBarExample(),
       ),
@@ -20,13 +27,46 @@ class LearningBackpackApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-  static const int numSections = 5;
-  static const List<int> numSubsections = [7, 3, 4, 2, 5];
-  List< List<bool> > trailMapSelected = List< List<bool> >.generate(
-    numSections,
-    (int index) => List<bool>.generate(numSubsections[index], (int index) => false)
-  );
+  int numSections = 0;
+  List<int> subsectionsPerSection = [];
+  List< List<bool> > trailMapSelected = [ [] ];
+  List<String> sectionTitles = [];
+  List< List<String> > subsectionTitlesPerSection = [ [] ];
+
   List<PlatformFile> files = [];
+
+  void setTrailMapFromList(List< List<String> > trailMapDesc) {
+    numSections = trailMapDesc.length;
+
+    subsectionsPerSection = List<int>.generate(
+      numSections,
+      (int index) => trailMapDesc[index].length - 1
+    );
+
+    sectionTitles = List<String>.generate(
+      numSections,
+      (int index) => trailMapDesc[index][0]
+    );
+
+    subsectionTitlesPerSection = List< List<String> >.generate(
+      numSections,
+      (int outIndex) => List<String>.generate(
+        subsectionsPerSection[outIndex],
+        (int inIndex) => trailMapDesc[outIndex][inIndex + 1]
+      )
+    );
+
+    initTrailMapList();
+  }
+
+  void initTrailMapList() {
+    trailMapSelected = List< List<bool> >.generate(
+      numSections,
+      (int index) => List<bool>.generate(subsectionsPerSection[index], (int index) => false)
+    );
+
+    notifyListeners();
+  }
 }
 
 class TrailMapSection extends StatefulWidget {
@@ -191,9 +231,14 @@ class TrailMapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var sectionTitles = appState.sectionTitles;
+    var numSections = appState.numSections;
+    var subsectionTitlesPerSection = appState.subsectionTitlesPerSection;
+
     return DefaultTabController(
       initialIndex: 0,
-      length: 5,
+      length: numSections,
       child: Scaffold(
         appBar: AppBar(
           // title: const Text('TabBar Sample'),
@@ -214,96 +259,31 @@ class TrailMapPage extends StatelessWidget {
               ],
             ),
           ),
-          bottom: const TabBar(
+          bottom: TabBar(
             isScrollable: true,
             tabAlignment: TabAlignment.center,
             tabs: <Widget>[
-              Tab(
-                icon: Icon(Icons.book),
-                child: Text("Language"),
-              ),
-              Tab(
-                icon: Icon(Icons.person),
-                child: Text("People"),
-              ),
-              Tab(
-                icon: Icon(Icons.east),
-                child: Text("Mission"),
-              ),
-              Tab(
-                icon: Icon(Icons.abc),
-                child: Text("Text"),
-              ),
-              Tab(
-                icon: Icon(Icons.abc),
-                child: Text("Text"),
-              ),
+              for (int i = 0; i < numSections; i++)
+                Tab(
+                  icon: const Icon(Icons.book),
+                  child: Text(sectionTitles[i])
+                ),
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: <Widget>[
-            Center(
-              child: TrailMapSection(
-                trailMapIndex: 0,
-                title: 'Learn the Language',
-                children: [
-                  TrailMapSubsection( title: 'Complete Duolingo course' ),
-                  TrailMapSubsection( title: 'Have a conversation with someone fluent in the language' ),
-                  TrailMapSubsection( title: 'Write a story in the language' ),
-                  TrailMapSubsection( title: 'Do something else' ),
-                  TrailMapSubsection( title: 'Do something else again' ),
-                  TrailMapSubsection( title: 'Do more stuff' ),
-                  TrailMapSubsection( title: 'Finish the rest of the stuff' )
-                ]
+            for (int i = 0; i < numSections; i++)
+              Center(
+                child: TrailMapSection(
+                  trailMapIndex: i,
+                  title: sectionTitles[i],
+                  children: <TrailMapSubsection>[
+                    for (var task in subsectionTitlesPerSection[i])
+                      TrailMapSubsection( title: task ),
+                  ]
+                )
               ),
-            ),
-            Center(
-              child: TrailMapSection(
-                trailMapIndex: 1,
-                title: 'Know the People',
-                children: <TrailMapSubsection>[
-                  TrailMapSubsection( title: 'Read [this book] on the country' ),
-                  TrailMapSubsection( title: 'Talk with [this missionary] who has been to the country' ),
-                  TrailMapSubsection( title: 'Take this quiz on the country\'s culture' )
-                ]
-              ),
-            ),
-            Center(
-              child: TrailMapSection(
-                trailMapIndex: 2,
-                title: 'Prepare for Missions',
-                children: <TrailMapSubsection>[
-                  TrailMapSubsection( title: 'Attend bi-annual SIM conference' ),
-                  TrailMapSubsection( title: 'Go to training event on [specific date]' ),
-                  TrailMapSubsection( title: 'Find host churches to support your mission' ),
-                  TrailMapSubsection( title: 'Write your first newsletter' )
-                ]
-              )
-            ),
-            Center(
-              child: TrailMapSection(
-                trailMapIndex: 3,
-                title: 'Text',
-                children: <TrailMapSubsection>[
-                  TrailMapSubsection( title: 'Text' ),
-                  TrailMapSubsection( title: 'Text' )
-                ]
-              )
-            ),
-            Center(
-              child: TrailMapSection(
-                trailMapIndex: 4,
-                title: 'Text',
-                children: <TrailMapSubsection>[
-                  TrailMapSubsection( title: 'Text' ),
-                  TrailMapSubsection( title: 'Text' ),
-                  TrailMapSubsection( title: 'Text' ),
-                  TrailMapSubsection( title: 'Text' ),
-                  TrailMapSubsection( title: 'Text' )
-                ]
-              )
-            ),
           ],
         ),
       ),
