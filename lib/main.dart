@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(const LearningBackpackApp());
 
@@ -7,8 +8,100 @@ class LearningBackpackApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: BottomNavigationBarExample(),
+    return ChangeNotifierProvider(
+      create: (context) => MyAppState(),
+      child: const MaterialApp(
+        home: BottomNavigationBarExample(),
+      ),
+    );
+  }
+}
+
+class MyAppState extends ChangeNotifier {
+  List<bool> peopleSelected = List<bool>.generate(7, (int index) => false);
+}
+
+class TrailMapSection extends StatefulWidget {
+  final String title;
+  final List<TrailMapSubsection> children;
+
+  const TrailMapSection({
+    super.key,
+    required this.title,
+    required this.children
+  });
+
+  @override
+  State<TrailMapSection> createState() => _TrailMapSectionState();
+}
+
+class _TrailMapSectionState extends State<TrailMapSection> {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+
+    final int numItems = widget.children.length;
+    List<bool> selected = appState.peopleSelected;//List<bool>.generate(numItems, (int index) => false);
+
+    return SingleChildScrollView(
+      child: DataTable(
+        onSelectAll: (bool? value) {},
+
+        columns: <DataColumn>[
+          DataColumn(
+            label: Text(
+              widget.title,
+              style: const TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold
+              )
+            )
+          ),
+        ],
+        rows: List<DataRow>.generate(
+          numItems,
+          (int index) => DataRow(
+            color: MaterialStateProperty.resolveWith<Color?>(
+                (Set<MaterialState> states) {
+              // All rows will have the same selected color.
+              if (states.contains(MaterialState.selected)) {
+                return Theme.of(context).colorScheme.primary.withOpacity(0.12);
+              }
+              return null; // Use default value for other states
+            }),
+            cells: <DataCell>[
+              DataCell(
+TrailMapSubsection(title: widget.children[index].title)
+              )
+            ],
+            selected: selected[index],
+            onSelectChanged: (bool? value) {
+              setState(() {
+                selected[index] = value!;
+                appState.peopleSelected[index] = value;
+              });
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TrailMapSubsection extends StatelessWidget {
+  final String title;
+
+  const TrailMapSubsection({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontStyle: FontStyle.italic
+        )
+      )
     );
   }
 }
@@ -145,7 +238,18 @@ class TrailMapPage extends StatelessWidget {
               child: DataTableExample(),
             ),
             Center(
-              child: Text("People"),
+              child: TrailMapSection(
+                title: 'Learn the Language',
+                children: [
+                  TrailMapSubsection( title: 'Complete Duolingo course' ),
+                  TrailMapSubsection( title: 'Have a conversation with someone fluent in the language' ),
+                  TrailMapSubsection( title: 'Write a story in the language' ),
+                  TrailMapSubsection( title: 'Do something else' ),
+                  TrailMapSubsection( title: 'Do something else again' ),
+                  TrailMapSubsection( title: 'Do more stuff' ),
+                  TrailMapSubsection( title: 'Finish the rest of the stuff' )
+                ]
+              ),
             ),
             Center(
               child: Text("Mission"),
