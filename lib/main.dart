@@ -161,7 +161,7 @@ class _BottomNavigationBarExampleState
         destinations: const <Widget>[
           NavigationDestination(
             icon: Icon(Icons.travel_explore),
-            label: 'Journeys',
+            label: 'Journey',
             tooltip: '',
           ),
           NavigationDestination(
@@ -377,7 +377,7 @@ class JourneyPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "Journeys - 25% Done",
+                  "Journey - 25% Done",
                   style: TextStyle(fontSize: 20),
                 ),
                 Padding(padding: EdgeInsets.all(5.0)),
@@ -422,6 +422,7 @@ class BackpackPage extends StatefulWidget{
   @override
    State<BackpackPage> createState() => _BackpackPageState();
 }
+
 class _BackpackPageState extends State<BackpackPage>{
   List<PlatformFile> files = [];
   @override
@@ -431,37 +432,35 @@ class _BackpackPageState extends State<BackpackPage>{
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  final result = await FilePicker.platform.pickFiles(allowMultiple: true);
-                  if(result == null) return;
-                  setState((){
-                    files += result.files;
-                  });
-                },
-                child: const Text('File upload'),
-              ),
-            ]
+          const Padding(
+            padding: EdgeInsets.all(10),
+            child: Text('Backpack', style: TextStyle(fontSize: 20),),
           ),
           Expanded(
             child: ListView(
-                  children:[
-                    const Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Text('FILES'),
-                    ),
-                    for(var file in files)
-                      ListTile(
-                        leading: const Icon(Icons.feed),
-                        title: Text(file.name),
-                        onTap: () => openTheFile(file)
-                      ),
-                  ]
-                ),
-          )
+              children:[
+                for(var file in files)
+                  ListTile(
+                    leading: const Icon(Icons.feed),
+                    title: Text(file.name),
+                    onTap: () => openTheFile(file)
+                  ),
+              ]
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: FloatingActionButton(
+              onPressed: () async {
+                final result = await FilePicker.platform.pickFiles(allowMultiple: true);
+                if(result == null) return;
+                setState((){
+                  files += result.files;
+                });
+              },
+              child: const Icon(Icons.add),
+            ),
+          ),
         ],
       ),
     );
