@@ -1,0 +1,12 @@
+This file describes remaining development tasks for future teams. Update this as necessary.
+
+REQUIRED CLIENT TASKS:
+-
+
+
+NICE TO HAVE FEATURES:
+-
+
+
+EXPANDING FUNCTIONALITY AND SECURITY:
+- Change the path_provider functionality (for saving files in the backpack module) to file_saver for expanded functionality (https://pub.dev/packages/file_saver)

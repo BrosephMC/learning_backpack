@@ -4,15 +4,15 @@ Backpack Terminology: Below are the core terms used in development and documenta
 
 Modules: The main parts of the program that users interact with
 	Backpack:
-		Artifacts: ???? (TODO: Update this after talking with client- gamified collectible?)
-		Item: A file or link saved and accessed by the User
-			Flag: A value (or values) linked to each item to "signal" completion to modules
-		Tag: An identifier used by the program to locate an item
+		Artifacts/Souvenirs: A file or link saved and accessed by the User
+			Flag: A value (or values) linked to each Artifact/Souvenir to "signal" completion to modules
+		Tag: An identifier used by the program to locate an artifact/souvenir: think categories
 			Competency: A genaric term for a skillset learned through the different activities. 
 				    An example may be as broad as "prayer" or "foreign language, or as specific as "intercessory prayer" or "learn Mandarin" 
-			Label: a User-Generated identifier for custom categories not already provided 
+			Labels/Stickers: a User-Generated identifier for custom categories not already provided 
 	TrailMap: Module for viewing progress
-		Trail: Specific list of things you can do as set by the Missions Organization
+		Trail/loops: Specific list of things you can do as set by the Missions Organization
 			Milestone: An individual, specific step or activity(ies) you do to complete the trail
-	Badges: A visual indicator of what a User has accomplished and what Competencies they have.
+		Journey: (Formerly Mountain/Region): The specific competency categories such as language, people, etc.) that can be selected for users to apply tasks towards
+	Badges: A visual indicator of what a user has accomplished and what competencies they have.
 
