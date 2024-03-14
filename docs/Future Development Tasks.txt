@@ -2,6 +2,7 @@ This file describes remaining development tasks for future teams. Update this as
 
 REQUIRED CLIENT TASKS:
 -Add visibility features to Trailmap Trails and Tasks
+-Sort Backpack contents: UI undeveloped, but process and protype code are in the "nextDev" folder under "docs"
 
 
 NICE TO HAVE FEATURES:

@@ -1,0 +1,42 @@
+To implement the backpack sort:
+
+1. Get directory object
+2. Use list() to put contents in a list
+3. Use sort() to sort the list according to a custom comparator
+	A. Use stat() to get the appropriate stat data on an object type (What info is given? does it vary by OS?)
+		stat.metaDataType
+	B. Feed the data into the comparison function (or a custom written one)
+	C. Repeat as necessary for each thing we are comparing to sort (or use a case statement)
+
+Code prototype:
+
+//Functionality for sorting 
+Future<void> sortItemList(Directory backpackStorage, int sortBy) async {
+  Directory dir = backpackStorage;
+  List<FileSystemEntity> itemList = await dir.list().toList();
+  switch (sortBy){
+    case 1:
+      itemList.sort((a, b) => a.stat().compareTo(b.stat()));    //Sort by 
+    case 2:
+      itemList.sort((a, b) => a..compareTo(b.));    //Sort by 
+    case 3:
+      itemList.sort((a, b) => a..compareTo(b.));    //Sort by 
+    default:
+    //Do nothing: leave it in order
+  }
+}
+
+Blockers: 
+-Could not find the properties returned by stat() or the FileStat class (Dart's equivalent since stat() is an OS function))
+-This prevents use of a comparison function to sort the directory contents
+
+
+Helpful URLs:
+
+https://api.dart.dev/stable/3.3.1/dart-io/FileStat-class.html
+https://api.dart.dev/stable/3.3.1/dart-io/FileSystemEntity-class.html
+https://api.dart.dev/stable/3.3.1/dart-html/File-class.html
+https://api.flutter.dev/flutter/dart-io/FileStat/stat.html
+https://stackoverflow.com/questions/57000166/how-to-sort-order-a-list-by-date-in-dart-flutter?rq=3
+https://stackoverflow.com/questions/53547997/sort-a-list-of-objects-in-flutter-dart-by-property-value
+https://api.flutter.dev/flutter/dart-core/List/sort.html
