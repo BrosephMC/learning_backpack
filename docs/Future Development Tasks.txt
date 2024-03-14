@@ -1,7 +1,7 @@
 This file describes remaining development tasks for future teams. Update this as necessary.
 
 REQUIRED CLIENT TASKS:
--
+-Add visibility features to Trailmap Trails and Tasks
 
 
 NICE TO HAVE FEATURES:

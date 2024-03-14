@@ -12,7 +12,7 @@ Modules: The main parts of the program that users interact with
 			Labels/Stickers: a User-Generated identifier for custom categories not already provided 
 	TrailMap: Module for viewing progress
 		Trail/loops: Specific list of things you can do as set by the Missions Organization
-			Milestone: An individual, specific step or activity(ies) you do to complete the trail
+			Milestone/Task: An individual, specific step or activity(ies) you do to complete the trail
 		Journey: (Formerly Mountain/Region): The specific competency categories such as language, people, etc.) that can be selected for users to apply tasks towards
 	Badges: A visual indicator of what a user has accomplished and what competencies they have.
 

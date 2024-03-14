@@ -16,8 +16,6 @@ Develop Backpack (save files/links/media)
 		Flag for badging
 		Flag for trailmap
 		Label with topic(s)
-	Artifact collection
-		???? (Client unclear- visual gamified way to incentivize learning and using backpack?)
 	File organization
 		Create structures (i.e. folders)
 		Sort by:
