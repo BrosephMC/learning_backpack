@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:open_file/open_file.dart';
 
 void main() => runApp(const LearningBackpackApp());
 
@@ -127,11 +129,11 @@ class _BottomNavigationBarExampleState
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
-    ListDemo(),
+    JourneyPage(),
 
     TrailMapPage(),
 
-    BackPackPage(),
+    BackpackPage(),
 
     Text(
       'Badges and Social',
@@ -357,41 +359,10 @@ class _DataTableExampleState extends State<DataTableExample> {
   }
 }
 
-class BackPackPage extends StatelessWidget {
-  const BackPackPage({
-    super.key,
-  });
+class JourneyPage extends StatelessWidget {
+  const JourneyPage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Column(
-        children: <Widget>[
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.notifications_sharp),
-              title: Text('Notification 1'),
-              subtitle: Text('This is a notification'),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.notifications_sharp),
-              title: Text('Notification 2'),
-              subtitle: Text('This is a notification'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ListDemo extends StatelessWidget {
-  const ListDemo({super.key});
-
-  // final ListDemoType type;
+  // final JourneyPageType type;
 
   @override
   Widget build(BuildContext context) {
@@ -442,5 +413,60 @@ class ListDemo extends StatelessWidget {
         ),
       // ),
     );
+  }
+}
+
+class BackpackPage extends StatefulWidget{
+  const BackpackPage({super.key});
+
+  @override
+   State<BackpackPage> createState() => _BackpackPageState();
+}
+class _BackpackPageState extends State<BackpackPage>{
+  List<PlatformFile> files = [];
+  @override
+  Widget build(BuildContext context) {
+    //var appState = context.watch<MyAppState>();
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ElevatedButton(
+                onPressed: () async {
+                  final result = await FilePicker.platform.pickFiles(allowMultiple: true);
+                  if(result == null) return;
+                  setState((){
+                    files += result.files;
+                  });
+                },
+                child: const Text('File upload'),
+              ),
+            ]
+          ),
+          Expanded(
+            child: ListView(
+                  children:[
+                    const Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Text('FILES'),
+                    ),
+                    for(var file in files)
+                      ListTile(
+                        leading: const Icon(Icons.feed),
+                        title: Text(file.name),
+                        onTap: () => openTheFile(file)
+                      ),
+                  ]
+                ),
+          )
+        ],
+      ),
+    );
+  }
+  void openTheFile(PlatformFile file){
+    OpenFile.open(file.path);
   }
 }
