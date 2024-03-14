@@ -439,7 +439,7 @@ class _BottomNavigationBarExampleState
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
-    JourneyPage(),
+    JourneysPage(),
 
     TrailMapPage(),
 
@@ -471,7 +471,7 @@ class _BottomNavigationBarExampleState
         destinations: const <Widget>[
           NavigationDestination(
             icon: Icon(Icons.travel_explore),
-            label: 'Journey',
+            label: 'Journeys',
             tooltip: '',
           ),
           NavigationDestination(
@@ -569,28 +569,95 @@ class TrailMapPage extends StatelessWidget {
   }
 }
 
-class JourneyPage extends StatelessWidget {
-  const JourneyPage({super.key});
+class JourneysPage extends StatefulWidget {
+  const JourneysPage({super.key});
 
-  // final JourneyPageType type;
+  @override
+  State<JourneysPage> createState() => _JourneysPageState();
+}
+
+class _JourneysPageState extends State<JourneysPage> {
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    // final localizations = GalleryLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        // automaticallyImplyLeading: false,
-        // title: const Text("title"),
-        title: const Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Journey - 25% Done",
-                  style: TextStyle(fontSize: 20),
+      body: Row(
+        children: <Widget>[
+          NavigationRail(
+            selectedIndex: _selectedIndex,
+            onDestinationSelected: (int index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            labelType: NavigationRailLabelType.all,
+            groupAlignment: 0.0, // Align items to the center
+            leading: FloatingActionButton(
+              onPressed: () {
+                // Add your onPressed code here!
+              },
+              tooltip: "Import new Journey WIP",
+              child: const Icon(Icons.add),
+            ),
+            destinations: _buildNavRailDestinations(),
+          ),
+          const VerticalDivider(thickness: 1, width: 1),
+          Expanded(
+            child: _getPage(_selectedIndex),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<NavigationRailDestination> _buildNavRailDestinations() {
+    // Define your list of navigation rail items here
+    List<NavigationRailDestination> destinations = [
+      const NavigationRailDestination(
+        icon: Icon(Icons.public),
+        label: SizedBox(
+          width: 120.0,
+          child: Text(
+            "Very Long Label That Needs to Be Abbreviated",
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+      const NavigationRailDestination(
+        icon: Icon(Icons.public),
+        label: Text('Second Item'),
+      ),
+      const NavigationRailDestination(
+        icon: Icon(Icons.public),
+        label: Text('Third Item'),
+      ),
+    ];
+    return destinations;
+  }
+
+  Widget _getPage(int index) {
+    switch (index) {
+      case 0:
+        return const Center(child: Text('Very Long Title That Doesn\'t Need to Be Abbreviated'));
+      case 1:
+        return ListView(
+          // title: Text("title"),
+          restorationId: 'list_demo_list_view',
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          children: [
+            const Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    "Journey Title - 25% Done",
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                Padding(padding: EdgeInsets.all(5.0)),
                 CircularProgressIndicator(
                   value: 0.25,
                   semanticsLabel: 'Linear progress indicator',
@@ -599,30 +666,32 @@ class JourneyPage extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-      ),
-      // body: Scrollbar(
-        body: ListView(
-          restorationId: 'list_demo_list_view',
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          children: [
-            for (int index = 1; index < 21; index++)
+            for (int index = 1; index < 11; index++)
               ListTile(
                 onTap: () {
                   //print("$index was pressed!");
                 },
                 leading: ExcludeSemantics(
-                  child: CircleAvatar(child: Text('$index')),
+                  child: CircleAvatar(
+                      child: Row(
+                        children: [
+                          const Icon(Icons.park),
+                          Text('$index',)
+                          ],
+                      )
+                  ),
                 ),
                 title: Text(
-                  index.toString(),
+                  "trail $index",
                 ),
-                subtitle: const Text("text"),
               ),
           ],
-        ),
-      // ),
-    );
+        );
+      case 2:
+        return const Center(child: Text('Third Item'));
+      default:
+        return Container();
+    }
   }
 }
 
