@@ -26,6 +26,7 @@ class MyAppState extends ChangeNotifier {
     numSections,
     (int index) => List<bool>.generate(numSubsections[index], (int index) => false)
   );
+  List<PlatformFile> files = [];
 }
 
 class TrailMapSection extends StatefulWidget {
@@ -424,10 +425,10 @@ class BackpackPage extends StatefulWidget{
 }
 
 class _BackpackPageState extends State<BackpackPage>{
-  List<PlatformFile> files = [];
   @override
   Widget build(BuildContext context) {
-    //var appState = context.watch<MyAppState>();
+    var appState = context.watch<MyAppState>();
+    List<PlatformFile> files = appState.files;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -456,6 +457,7 @@ class _BackpackPageState extends State<BackpackPage>{
                 if(result == null) return;
                 setState((){
                   files += result.files;
+                  appState.files = files;
                 });
               },
               child: const Icon(Icons.add),
