@@ -71,7 +71,7 @@ class _TrailMapSectionState extends State<TrailMapSection> {
             }),
             cells: <DataCell>[
               DataCell(
-TrailMapSubsection(title: widget.children[index].title)
+                TrailMapSubsection(title: widget.children[index].title)
               )
             ],
             selected: selected[index],
