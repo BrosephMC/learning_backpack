@@ -119,7 +119,7 @@ Icon getIconFromWord(String phrase) {
       'icon' : Icons.public
     },
     {
-      'keywords' : <String>[ 'faith', 'church', 'spirit', 'holy' ],
+      'keywords' : <String>[ 'faith', 'church', 'spirit', 'holy', 'minist' ],
       'icon' : Icons.church
     },
     {

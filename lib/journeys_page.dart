@@ -59,7 +59,8 @@ class _JourneysPageState extends State<JourneysPage> {
     List<NavigationRailDestination> destinations = [
       for(var journey in journeys)
         NavigationRailDestination(
-        icon: const Icon(Icons.public),
+        // icon: const Icon(Icons.public),
+        icon: getIconFromWord(journey.name),
         label: SizedBox(
           width: 120.0,
           child: Text(
