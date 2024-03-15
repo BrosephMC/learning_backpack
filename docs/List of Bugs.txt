@@ -6,3 +6,6 @@ Bugs are followed by the exact OS, version, and build affected:
 	<First Bug Name>: <Bug description>
 	-<Affected OS, Version, and Build info>
 	
+Marking tasks complete does not update progress indicators immediately on the Trailmap page User Interface
+Currently, the user has to switch tabs before seeing the updated progress bars
+You might need to do something with global app state, perhaps.
