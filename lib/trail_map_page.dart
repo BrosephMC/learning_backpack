@@ -215,9 +215,10 @@ class _TrailMaptaskState extends State<TrailMaptask> {
 
                           TextField(
                             decoration: null,
+                            maxLength: 4,
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly//allow(RegExp(r'^\d*\.?\d*')),
+                              FilteringTextInputFormatter.digitsOnly
                             ],
                             controller: minutesSpentController,
                             onChanged: (String contents) {
