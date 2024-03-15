@@ -5,6 +5,9 @@ import 'package:open_file/open_file.dart';
 import 'dart:io';
 import 'package:path/path.dart' as p;
 
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+
 void main() {
   runApp(const LearningBackpackApp());
 }
@@ -703,49 +706,226 @@ class BackpackPage extends StatefulWidget{
 }
 
 class _BackpackPageState extends State<BackpackPage>{
+  List<PlatformFile> files =  [];//list of files
   @override
+  
+//#########################################################################
+  //Method to initialize the file list and retrieve values from storage
+  void initState(){
+      super.initState();
+      loadFiles();
+  }
+//#########################################################################
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    List<PlatformFile> files = appState.files;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Padding(
-            padding: EdgeInsets.all(10),
-            child: Text('Backpack', style: TextStyle(fontSize: 20),),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ElevatedButton(
+                onPressed: () async {
+                  final result = await FilePicker.platform.pickFiles(allowMultiple: true);
+                  print("$result.path");
+                  if(result == null) return;
+                  //final file = result.files.first;
+                  setState((){
+                    files += result.files;
+                  });
+        //#########################################################################
+                  //For file saving
+                  for(var theFile in result.files){
+                    File savedFile = File(theFile.path!);
+                    await saveFile(theFile.name, savedFile);
+                    print("$savedFile");
+                    print("file saved");
+                  }
+        //#########################################################################
+                },
+                child: Text('File upload'),
+              ),
+            ]
           ),
           Expanded(
-            child: ListView(
-              children:[
-                for(var file in files)
-                  ListTile(
-                    leading: const Icon(Icons.feed),
-                    title: Text(file.name),
-                    onTap: () => openTheFile(file)
-                  ),
-              ]
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: FloatingActionButton(
-              onPressed: () async {
-                final result = await FilePicker.platform.pickFiles(allowMultiple: true);
-                if(result == null) return;
-                setState((){
-                  files += result.files;
-                  appState.files = files;
-                });
-              },
-              child: const Icon(Icons.add),
-            ),
-          ),
+            child: GridView.count(
+                  primary: false,
+                  padding: const EdgeInsets.all(20),
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
+                  crossAxisCount: 2,
+                  children: List.generate(files.length, (index){
+                    var file = files[index];
+                    return Card(
+                      color: Colors.blue,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(file.name, style: TextStyle(fontSize: 12, color: Colors.white)),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(onPressed: () {openTheFile(file.name);}, icon: const Icon(Icons.file_copy), iconSize: 35, color: Colors.white),
+                              IconButton(onPressed: () {deletingFile(file.name);}, icon: const Icon(Icons.delete), iconSize: 35, color: Colors.white),
+
+                            ],
+                            ),
+                        ]      
+                      ),
+                    );
+                  }),
+                ),
+          )
         ],
+        
       ),
     );
   }
-  void openTheFile(PlatformFile file){
-    OpenFile.open(file.path);
+//#########################################################################
+  //Method to open files
+  void openTheFile(String filename) async{
+    try {
+      final file = await _localFile(filename);
+      OpenFile.open(file.path);
+      print("file opened");
+    } catch (e) {
+      print("Error opening file: $e");
+    }
+    
   }
+    //Obtain the Application Documents directory (where files will be stored, in the App's system-allocated, protected folders
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
+
+  //Create a reference to the file location
+  Future<File> _localFile(String filename) async {
+    final path = await _localPath;
+    return File('$path/$filename');
+  }
+
+  //code for saving files 
+  Future<void> saveFile(String filename, File file) async {
+    final destinationFile = await _localFile(filename);
+    try {
+      await file.copy(destinationFile.path);
+    } catch (e) {
+      print("Error saving file: $e");
+    }
+  }
+
+  //code to delete files of the passed filename
+  Future<void> deleteFile(String filename) async {
+    try {
+      final file = await _localFile(filename);
+      await file.delete();
+      print("file deleted");
+    } catch (e) {
+      print("Error deleting file: $e");
+    }
+  }
+
+  //Method to delete files and remove from the working file list that is being displayed
+  void deletingFile(String filename){
+    deleteFile(filename);
+    setState((){
+      files.removeWhere((file) => file.name == filename);
+    });
+    
+  }
+
+  //Method to read a file directory and pass the files into a file list
+  Future<List<PlatformFile>> getDir() async{
+    List<PlatformFile> theFiles = [];
+    bool userfile = false;
+    final theDir = await _localPath;
+    final myDir = Directory(theDir);
+    if(myDir.listSync().isEmpty){
+      return theFiles;
+    }
+    // Use a for loop to handle asynchronous operations correctly
+    for (var file in myDir.listSync()) {
+        if (file is File) {
+          // Await the file length operation before adding the PlatformFile object
+          //check if file is accessible to the user
+          try {
+            await file.openRead();
+            userfile = true;
+          } catch (e){
+            userfile = false;
+          }
+          //add files to the file list from the local app storage
+          if (userfile){
+            int size = await file.length();
+            String filename = basename(file.path);
+            theFiles.add(PlatformFile(name: filename, size: size));
+          }
+          else{
+            continue;
+          }
+          
+          
+        }
+        
+    }
+    
+    return theFiles;
+  }
+  
+  //Method to load files from storage to a file list
+  void loadFiles() async{
+    List<PlatformFile> loadedFiles = await getDir();
+    setState(() {
+      files = loadedFiles;
+      print("$files");
+    }); 
+  }
+//#########################################################################
 }
+
+  // Widget build(BuildContext context) {
+  //   var appState = context.watch<MyAppState>();
+  //   List<PlatformFile> files = appState.files;
+  //   return Center(
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: [
+  //         const Padding(
+  //           padding: EdgeInsets.all(10),
+  //           child: Text('Backpack', style: TextStyle(fontSize: 20),),
+  //         ),
+  //         Expanded(
+  //           child: ListView(
+  //             children:[
+  //               for(var file in files)
+  //                 ListTile(
+  //                   leading: const Icon(Icons.feed),
+  //                   title: Text(file.name),
+  //                   onTap: () => openTheFile(file)
+  //                 ),
+  //             ]
+  //           ),
+  //         ),
+  //         Padding(
+  //           padding: const EdgeInsets.all(15.0),
+  //           child: FloatingActionButton(
+  //             onPressed: () async {
+  //               final result = await FilePicker.platform.pickFiles(allowMultiple: true);
+  //               if(result == null) return;
+  //               setState((){
+  //                 files += result.files;
+  //                 appState.files = files;
+  //               });
+  //             },
+  //             child: const Icon(Icons.add),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+  // void openTheFile(PlatformFile file){
+  //   OpenFile.open(file.path);
+  // }
+//}
