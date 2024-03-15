@@ -15,13 +15,13 @@ class JourneysPage extends StatefulWidget {
 }
 
 class _JourneysPageState extends State<JourneysPage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 0; // Which journey (set of trails) is being viewed
   var journeys = [];
 
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    journeys = appState.journeys;
+    journeys = appState.journeys; // Get loaded journeys from global appState
     print("selectedtrail journeys ${appState.selectedTrail}");
 
     return Scaffold(
@@ -55,12 +55,11 @@ class _JourneysPageState extends State<JourneysPage> {
     );
   }
 
+  // Side panel which shows loaded journeys
   List<NavigationRailDestination> _buildNavRailDestinations() {
-    // Define your list of navigation rail items here
     List<NavigationRailDestination> destinations = [
       for(var journey in journeys)
         NavigationRailDestination(
-        // icon: const Icon(Icons.public),
         icon: getIconFromWord(journey.name),
         label: SizedBox(
           width: 120.0,
@@ -81,7 +80,7 @@ class _JourneysPageState extends State<JourneysPage> {
       restorationId: 'list_demo_list_view',
       padding: const EdgeInsets.symmetric(vertical: 8),
       children: [
-        Column(
+        Column( // Journey title and progress bar
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Text(
@@ -96,14 +95,13 @@ class _JourneysPageState extends State<JourneysPage> {
                 ),
               ],
             ),
-        for (int i = 0; i < journeys[index].trails.length; i++)
+        for (int i = 0; i < journeys[index].trails.length; i++) // List of trails
           Container(
-            color: journeys[index].trails[i] == appState.selectedTrail ? Colors.blueGrey : Colors.transparent,
+            color: journeys[index].trails[i] == appState.selectedTrail ? Colors.blueGrey : Colors.transparent, // change color if trail is selected
             child: Padding(
               padding: const EdgeInsets.all(4),
               child: ListTile(
-                onTap: () {
-                  // print("$index was pressed!");
+                onTap: () { // selectedTrail is loaded into trail map page on tap/click
                   appState.selectTrailMap(
                     journeys[index].trails[i]
                   );
@@ -114,12 +112,11 @@ class _JourneysPageState extends State<JourneysPage> {
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
-                          CircularProgressIndicator(
+                          CircularProgressIndicator( // Shows progress of individual trail
                             value: journeys[index].trails[i].getPercentage(),
                             color: Colors.green,
                             backgroundColor: Colors.grey,
                             strokeWidth: 10.0,
-                            // strokeCap: StrokeCap.round,
                           ),
                           const Icon(Icons.park, size: 40.0, color: Color.fromARGB(255, 83, 83, 83),),
                           Center(
@@ -141,7 +138,7 @@ class _JourneysPageState extends State<JourneysPage> {
                             "Trail: ${journeys[index].trails[i].name}  ", 
                             maxLines: 5, 
                             softWrap: true,
-                            style: TextStyle(color: journeys[index].trails[i] == appState.selectedTrail ? Colors.white : null,)
+                            style: TextStyle(color: journeys[index].trails[i] == appState.selectedTrail ? Colors.white : null,) // change color if trail is selected
                           ),
                       ),
                     ],
