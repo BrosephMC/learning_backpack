@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
-import 'dart:io';
-import 'dart:math';
+import 'package:flutter/material.dart'; // Needed for widgets
+import 'dart:io'; // Needed for File class
+import 'dart:math'; // Needed for math functions like pow()
 
 //
 // Journey, Trail, Category, Task Classes
+// A Journey contains Trails, a Trail contains Categories, and so on
 //
 class Journey {
   String name;
@@ -14,9 +15,11 @@ class Journey {
   @override
   String toString() => 'Journey(name: $name, trails: $trails)';
 
+  // Calculate how many Tasks in this Journey have been completed
   double getPercentage(){
     int completed = 0;
     int total = 0;
+
     for(var tr in trails){
       for(var c in tr.categories){
         for(var t in c.tasks){
@@ -44,6 +47,7 @@ class Trail {
   @override
   String toString() => 'Trail(name: $name, categories: $categories)';
 
+  // Calculate how many Tasks in this Trail have been completed
   double getPercentage(){
     int completed = 0;
     int total = 0;
@@ -72,6 +76,7 @@ class Category {
   @override
   String toString() => 'Category(name: $name, tasks: $tasks)';
 
+  // Calculate how many Tasks in this Category have been completed
   double getPercentage(){
     int completed = 0;
     int total = 0;
@@ -105,45 +110,46 @@ class Task {
 
 //
 // Creates a list of Journeys from a given text file describing them
+// See assets/sample3.txt for an example of the input text format
 //
 List<Journey>? parseJourneys(String filePath) {
   // Note: Must end the file with 2 newlines
   try{
-  final file = File(filePath);
-  final lines = file.readAsLinesSync();
+    final file = File(filePath);
+    final lines = file.readAsLinesSync();
 
-  List<Journey> journeys = [];
-  Journey? currentJourney;
-  Trail? currentTrail;
-  Category? currentCategory;
-  Task? currentTask;
+    List<Journey> journeys = [];
+    Journey? currentJourney;
+    Trail? currentTrail;
+    Category? currentCategory;
+    Task? currentTask;
 
-  for (final line in lines) {
-    if (line.startsWith('\$')) {
-      // Journey
-      currentJourney = Journey(line.substring(1).trim(), []);
-    } else if (line.startsWith(' #')) {
-      // Trail
-      currentTrail = Trail(line.substring(2).trim(), []);
-      currentJourney!.trails.add(currentTrail);
-    } else if (line.startsWith('  >')) {
-      // Category
-      currentCategory = Category(line.substring(3).trim(), []);
-      currentTrail!.categories.add(currentCategory);
-    } else if (line.startsWith('   -')) {
-      // Task
-      currentTask = Task(line.substring(4).trim(), [], 0, "", 0);
-      currentCategory!.tasks.add(currentTask);
-    } else if (line.startsWith('    *')) {
-      // Task Description
-      currentTask!.description.add(line.substring(5).trim());
-    } else if (line.isEmpty) {
-      journeys.add(currentJourney!);
+    for (final line in lines) {
+      if (line.startsWith('\$')) {
+        // Journey
+        currentJourney = Journey(line.substring(1).trim(), []);
+      } else if (line.startsWith(' #')) {
+        // Trail
+        currentTrail = Trail(line.substring(2).trim(), []);
+        currentJourney!.trails.add(currentTrail);
+      } else if (line.startsWith('  >')) {
+        // Category
+        currentCategory = Category(line.substring(3).trim(), []);
+        currentTrail!.categories.add(currentCategory);
+      } else if (line.startsWith('   -')) {
+        // Task
+        currentTask = Task(line.substring(4).trim(), [], 0, "", 0);
+        currentCategory!.tasks.add(currentTask);
+      } else if (line.startsWith('    *')) {
+        // Task Description
+        currentTask!.description.add(line.substring(5).trim());
+      } else if (line.isEmpty) {
+        journeys.add(currentJourney!);
+      }
     }
-  }
 
-   print(journeys);
-  return journeys;
+    print(journeys);
+    return journeys;
   } catch (e) {
     print("could not read from file");
     return [];
@@ -313,6 +319,7 @@ String formatBytes(int bytes, int decimalPlaces) {
 // To make the file name more readable
 //
 double scaleFileName(String name) {
+  // All of these numbers are chosen arbitrarily (5, 0.55, 0.65)
   double scale = 5 / pow(name.length, 0.55);
   if (scale < 0.65) scale = 0.65;
   if (scale > 1) scale = 1;
