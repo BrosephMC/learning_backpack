@@ -26,3 +26,5 @@ NICE TO HAVE FEATURES:
 EXPANDING FUNCTIONALITY AND SECURITY:
 - Change the path_provider functionality (for saving files in the backpack module) to file_saver for expanded functionality (https://pub.dev/packages/file_saver)
 - Optimize the code for saving/opening/deleting files in the backpack (It's stable and functional, but technically inefficient)
+- Review the main() file and separate into multiple files for easier development
+- 
