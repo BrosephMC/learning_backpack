@@ -794,7 +794,45 @@ class BackpackPage extends StatefulWidget{
    State<BackpackPage> createState() => _BackpackPageState();
 }
 
+enum SortOptions {
+  name,
+  size,
+  extension,
+}
+
+extension SortOptionsExtension on SortOptions {
+  String get label {
+    switch (this) {
+      case SortOptions.name:
+        return 'Name';
+      case SortOptions.size:
+        return 'Size';
+      case SortOptions.extension:
+        return 'Extension';
+    }
+  }
+
+  SortMode get mode {
+    switch (this) {
+      case SortOptions.name:
+        return SortMode.name;
+      case SortOptions.size:
+        return SortMode.size;
+      case SortOptions.extension:
+        return SortMode.extension;
+    }
+  }
+}
+
+enum SortMode {
+  name,
+  size,
+  extension,
+}
+
+
 class _BackpackPageState extends State<BackpackPage>{
+  SortOptions? selectedOption;
   List<PlatformFile> files =  [];//list of files
   @override
   
@@ -834,6 +872,36 @@ class _BackpackPageState extends State<BackpackPage>{
                 },
                 child: Text('File upload'),
               ),
+              
+              // Insert the code for the drop down UI here
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownMenu<SortOptions>(
+                enableSearch: false,
+                initialSelection: SortOptions.name,
+                requestFocusOnTap: false,
+                label: const Text('Sort by...'),
+                onSelected: (SortOptions? label) {
+                  setState(() {
+                    selectedOption = label;
+                    if (label != null) {
+                      sortItemList(files, label.mode);
+                    }
+                  });
+                },
+
+                dropdownMenuEntries: SortOptions.values
+                  .map<DropdownMenuEntry<SortOptions>>(
+                    (SortOptions mode) {
+                      return DropdownMenuEntry<SortOptions>(
+                        value: mode,
+                        label: mode.label,
+                        enabled: mode.label != 'Grey'
+                      );
+                    }).toList(),
+              ),
+            ),
+
             ]
           ),
           Expanded(
@@ -970,6 +1038,23 @@ class _BackpackPageState extends State<BackpackPage>{
       print("$files");
     }); 
   }
+
+  Future<void> sortItemList(List<PlatformFile> itemList, SortMode sortBy) async {
+  switch (sortBy) {
+    case SortMode.name:
+      itemList.sort((a, b) => a.name.compareTo(b.name));    // Sort by file name (alphabetical)
+      break;
+    case SortMode.size:
+      itemList.sort((a, b) => a.size.compareTo(b.size));    // Sort by file size (in bytes)
+      break;
+    case SortMode.extension:
+      itemList.sort((a, b) => a.extension!.compareTo(b.extension!));    // Sort by file type (extension)
+      break;
+    default:
+      // Do nothing: leave it in default order (inverse of file system sort)
+  }
+}
+
 //#########################################################################
 }
 
