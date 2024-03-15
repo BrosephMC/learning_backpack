@@ -23,12 +23,12 @@ class TrailMapPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Text(
-                  "${selectedTrail.name} - 50%",
+                  "${selectedTrail.name} - ${(selectedTrail.getPercentage()*100).toInt()}%",
                   style: const TextStyle(fontSize: 20),
                 ),
                 const Padding(padding: EdgeInsets.all(5.0)),
-                const LinearProgressIndicator(
-                  value: 0.5,
+                LinearProgressIndicator(
+                  value: selectedTrail.getPercentage(),
                   semanticsLabel: 'Linear progress indicator',
                 ),
               ],
@@ -41,7 +41,10 @@ class TrailMapPage extends StatelessWidget {
               for (int i = 0; i < selectedTrail.categories.length; i++)
                 Tab(
                   icon: getIconFromWord(selectedTrail.categories[i].name),
-                  child: Text(selectedTrail.categories[i].name)
+                  child: Text(
+                    selectedTrail.categories[i].name,
+                    style: selectedTrail.categories[i].getPercentage() == 1 ? const TextStyle(decoration: TextDecoration.lineThrough) : null,
+                  )
                 ),
             ],
           ),
@@ -56,9 +59,7 @@ class TrailMapPage extends StatelessWidget {
                     for (int j = 0; j < selectedTrail.categories[i].tasks.length; j++)
                       TrailMaptask(
                         title: selectedTrail.categories[i].tasks[j].name,
-                        descriptionList: <String>[
-                          selectedTrail.categories[i].tasks[j].description
-                        ],
+                        descriptionList: selectedTrail.categories[i].tasks[j].description,
                         trailMapIndex: i,
                         trailMapSubindex: j,
                       ),

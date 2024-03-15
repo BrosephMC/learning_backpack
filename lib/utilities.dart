@@ -13,6 +13,26 @@ class Journey {
 
   @override
   String toString() => 'Journey(name: $name, trails: $trails)';
+
+  double getPercentage(){
+    int completed = 0;
+    int total = 0;
+    for(var tr in trails){
+      for(var c in tr.categories){
+        for(var t in c.tasks){
+          if(t.status == 2){
+            completed++;
+          }
+          total++;
+        }
+      }
+    }
+    if(total != 0){
+      return completed/total;
+    } else {
+      return 0;
+    }
+  }
 }
 
 class Trail {
@@ -23,6 +43,24 @@ class Trail {
 
   @override
   String toString() => 'Trail(name: $name, categories: $categories)';
+
+  double getPercentage(){
+    int completed = 0;
+    int total = 0;
+    for(var c in categories){
+      for(var t in c.tasks){
+        if(t.status == 2){
+          completed++;
+        }
+        total++;
+      }
+    }
+    if(total != 0){
+      return completed/total;
+    } else {
+      return 0;
+    }
+  }
 }
 
 class Category {
@@ -33,18 +71,35 @@ class Category {
 
   @override
   String toString() => 'Category(name: $name, tasks: $tasks)';
+
+  double getPercentage(){
+    int completed = 0;
+    int total = 0;
+    for(var t in tasks){
+      if(t.status == 2){
+        completed++;
+      }
+      total++;
+    }
+    if(total != 0){
+      return completed/total;
+    } else {
+      return 0;
+    }
+  }
 }
 
 class Task {
   String name;
-  String description;
+  List<String> description; // One line per element
   int status;
   String notes;
+  double hoursSpent; // How long they have spent on the task
 
-  Task(this.name, this.description, this.status, this.notes);
+  Task(this.name, this.description, this.status, this.notes, this.hoursSpent);
 
   @override
-  String toString() => 'Task(name: $name, description: $description, notes: $notes)';
+  String toString() => 'Task(name: $name, description: $description, notes: $notes, hours spent: $hoursSpent)';
 }
 
 
@@ -77,11 +132,11 @@ List<Journey>? parseJourneys(String filePath) {
       currentTrail!.categories.add(currentCategory);
     } else if (line.startsWith('   -')) {
       // Task
-      currentTask = Task(line.substring(4).trim(), "", 0, "");
+      currentTask = Task(line.substring(4).trim(), [], 0, "", 0);
       currentCategory!.tasks.add(currentTask);
     } else if (line.startsWith('    *')) {
       // Task Description
-      currentTask!.description = line.substring(5).trim();
+      currentTask!.description.add(line.substring(5).trim());
     } else if (line.isEmpty) {
       journeys.add(currentJourney!);
     }

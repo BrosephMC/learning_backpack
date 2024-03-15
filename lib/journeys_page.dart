@@ -87,10 +87,10 @@ class _JourneysPageState extends State<JourneysPage> {
                   "${journeys[index].name} Journey",
                   style: const TextStyle(fontSize: 20),
                 ),
-                const Text("25% Done"),
+                Text("${(journeys[index].getPercentage()*100).toInt()}% Done"),
                 const Padding(padding: EdgeInsets.all(5.0)),
-                const LinearProgressIndicator(
-                  value: 0.5,
+                LinearProgressIndicator(
+                  value: journeys[index].getPercentage(),
                   semanticsLabel: 'Linear progress indicator',
                 ),
               ],
@@ -109,8 +109,8 @@ class _JourneysPageState extends State<JourneysPage> {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      const CircularProgressIndicator(
-                        value: 0.25,
+                      CircularProgressIndicator(
+                        value: journeys[index].trails[i].getPercentage(),
                         color: Colors.green,
                         backgroundColor: Colors.grey,
                         strokeWidth: 10.0,

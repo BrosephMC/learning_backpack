@@ -1,0 +1,167 @@
+$Test
+ #General
+  >Language
+   -Complete Duolingo
+    *Go to this link: duolingo.com/somelink
+    *Complete chapters 1-4
+    *Get at least a 80% on the chapter quizzes
+   -Read [this book] on the Language
+    *Here is the link to the book: somelink.com/somelink
+   -Have a conversation with someone fluent in the Language
+  >People
+   -Read [this book] on the country
+    *Here is the link to the book: somelink.com/somelink
+   -Read this personal anecdote
+  >Faith
+   -Follow this Bible plan
+    *This plan will take you through preparing to be a missionary
+    *If you have any questions, email johndoe@sim.org
+   -Watch this video series
+    *Here is the first video: youtube.com/link1
+    *Here is the second video: youtube.com/link2
+    *Here is the third video: youtube.com/link3
+    *Here is the fourth video: youtube.com/link4
+    *Here is the fifth video: youtube.com/link5
+    *Here is the sixth video: youtube.com/link6
+    *Here is the seventh video: youtube.com/link7
+  >Missions
+   -Go to [this] SIM conference
+    *The conference is bi-annual
+    *The next date is [date]
+    *The time is [time]
+    *The location is [location]
+   -Find a host church
+    *Find a host church, or multiple, to support you in your mission
+    *Here is an article that will explain how to ask for support
+    *Email this person with any questions or concerns: johndoe@sim.org
+   -Learn how to write newsletters
+    *Write your first newsletters
+    *Talk to John Doe about newsletters
+    *Read this article: somelink.com/somelink
+  >Food
+   -Try international dishes
+    *Go to SIM's Taste of the Nations feast
+    *The date is [date]
+    *The time is [time]
+    *The location is [location]
+   -Learn classic dishes from your country
+ #Test Trail
+  >Section
+   -Task
+    *Description
+    *Description
+    *Description
+    *Description
+    *Description
+   -Task
+    *Description
+    *Description
+    *Description
+    *Description
+    *Description
+   -Task
+    *Description
+    *Description
+    *Description
+    *Description
+    *Description
+  >Section
+   -Task
+    *Description
+    *Description
+    *Description
+    *Description
+    *Description
+   -Task
+    *Description
+    *Description
+    *Description
+    *Description
+    *Description
+   -Task
+    *Description
+    *Description
+    *Description
+    *Description
+    *Description
+  >Section
+   -Task
+    *Description
+    *Description
+    *Description
+    *Description
+    *Description
+   -Task
+    *Description
+    *Description
+    *Description
+    *Description
+    *Description
+   -Task
+    *Description
+    *Description
+    *Description
+    *Description
+    *Description
+
+$Internal
+ #Intentionality, planning, learning, & teaching
+  >Intentionality
+   -my task
+  >planning
+   -my other task
+  >learning
+   -my other other task
+  >teaching
+  -teach task
+  -another teaching task
+ #Resource acquisition & stewardship
+  >MPD Foundations
+   -Read “The God Ask”
+    *this is a description 1
+    *this is a description 2
+    *this is a description 3
+    *this is a description 4
+   -Complete MPD bootcamp
+    *this is another description 1
+    *this is another description 2
+    *this is another description 3
+    *this is another description 4
+    *this is another description 5
+    *this is another description 6
+    *this is another description 7
+    *this is another description 8
+    *this is another description 9
+    *this is another description 10
+   -Interview a support-raiser
+    *This is a description that is very long. I put in long descriptions so we can test our app and see how it handles a bunch of text.It doesn't have \n newlines though ->!@#$%
+    *JK yes it does, here's a newline
+    *And another
+  >Communicating  with partners
+   -RG “Social Media Standards” video
+   -Subscribe/read missionary newsletters
+   -Journaling your faith journey
+   -Giving pathways worksheet
+  >Managing your finances and IMA
+   -First expense report
+   -IMA basics
+   -Recordkeeping basics
+ #Personal health (spiritual, emotional, physical, relational, family)
+
+$Interpersonal
+ #Developing people & recruiting
+ #Coaching & mentoring
+ #Team health
+ #Communication & interpersonal relationships
+
+$Ministry
+ #Values, purpose, & orientation to RG Role
+ #Partnerships
+ #Cross-cultural ministry & contextualization
+ #Holistic ministry
+
+$Spirituality
+ #Bible, theology & missiology
+ #The Church
+ #Prayer
+
