@@ -130,6 +130,9 @@ class _TrailMaptaskState extends State<TrailMaptask> {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
 
+    final notesController = TextEditingController();
+    notesController.text = appState.selectedTrail.categories[widget.trailMapIndex].tasks[widget.trailMapSubindex].notes;
+
     int selected = appState.selectedTrail.categories[widget.trailMapIndex].tasks[widget.trailMapSubindex].status;
     const List<String> messages = [ 'Not Started', 'In Progress', 'Complete' ];
     final List<Color> colors =[ Colors.red, Colors.orange, Colors.lightGreen[700]! ];
@@ -252,13 +255,18 @@ class _TrailMaptaskState extends State<TrailMaptask> {
                                 border: Border.all(width: 2, color: const Color.fromARGB(255, 34, 0, 126)),
                                 borderRadius: const BorderRadius.all(Radius.circular(15))
                               ),
-                              child: const Padding(
-                                padding: EdgeInsets.all(8),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
                                 child: TextField(
                                   decoration: null,
                                   keyboardType: TextInputType.multiline,
                                   minLines: 1,
-                                  maxLines: null
+                                  maxLines: null,
+                                  controller: notesController,
+                                  onChanged: (String contents) {
+                                    notesController.text = contents;
+                                    appState.selectedTrail.categories[widget.trailMapIndex].tasks[widget.trailMapSubindex].notes = contents;
+                                  }
                                 ),
                               ),
                             ),
