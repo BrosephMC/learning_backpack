@@ -28,7 +28,13 @@ class _BackpackPageState extends State<BackpackPage>{
       loadFiles();
   }
 //#########################################################################
+  @override
   Widget build(BuildContext context) {
+    const tileSize = 170;
+    int numTiles = (MediaQuery.of(context).size.width / tileSize).floor();
+    if (numTiles < 2) numTiles = 2;
+    double tileScale = (MediaQuery.of(context).size.width / tileSize) / numTiles;
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -55,7 +61,7 @@ class _BackpackPageState extends State<BackpackPage>{
                   }
         //#########################################################################
                 },
-                child: Text('File upload'),
+                child: const Text('File upload'),
               ),
               
               // Insert the code for the drop down UI here
@@ -89,36 +95,74 @@ class _BackpackPageState extends State<BackpackPage>{
 
             ]
           ),
+
+          Center(
+            child: Text(
+              files.isEmpty
+                ? 'You have no items in your backpack.'
+                : 'You have ${files.length} item${files.length == 1 ? '' : 's'} in your backpack.',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20
+              )
+            )
+          ),
+
           Expanded(
             child: GridView.count(
                   primary: false,
                   padding: const EdgeInsets.all(20),
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 5,
-                  crossAxisCount: 2,
+                  crossAxisSpacing: 5 * tileScale,
+                  mainAxisSpacing: 5 * tileScale,
+                  crossAxisCount: numTiles,
                   children: List.generate(files.length, (index){
                     var file = files[index];
                     return Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25 * tileScale),
+                      ),
                       color: Colors.blue,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        //crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: Icon(
-                              iconFromExtension(file.extension!),
-                              size: 50,
-                              color: Colors.white
+                          Expanded(
+                            flex: 5,
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(6 * tileScale),
+                                child: Icon(
+                                  iconFromExtension(file.extension!),
+                                  size: 32 * tileScale,
+                                  color: Colors.white
+                                ),
+                              ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Text(
-                              file.name,
-                              style: const TextStyle(fontSize: 15, color: Colors.white),
-                              softWrap: true
+
+                          Expanded(
+                            flex: 7,
+                            child: Center(
+                              child: Container(
+                                width: tileSize * 2.0,
+                                color: const Color.fromRGBO(12, 94, 161, 1),
+                                child: Padding(
+                                  padding: EdgeInsets.fromLTRB(8 * tileScale, 8 * tileScale, 8 * tileScale, 3 * tileScale),
+                                  child: SingleChildScrollView(
+                                    child: Text(
+                                      file.name,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 15 * tileScale * scaleFileName(file.name),
+                                        color: Colors.white
+                                      )
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
+<<<<<<< Updated upstream
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
@@ -153,7 +197,41 @@ class _BackpackPageState extends State<BackpackPage>{
                                 color: Colors.white,
                                 ),
                             ],
+=======
+
+                          Expanded(
+                            flex: 2,
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(8 * tileScale * 0),
+                                child: Container(
+                                  child: Text(
+                                    formatBytes(file.size, 2),
+                                    style: TextStyle(
+                                      fontSize: 12 * tileScale,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'monospace'
+                                    )
+                                  ),
+                                ),
+                              ),
+>>>>>>> Stashed changes
                             ),
+                          ),
+
+                          Expanded(
+                            flex: 5,
+                            child: Center(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  IconButton(onPressed: () {openTheFile(file.name);}, icon: const Icon(Icons.open_in_new_rounded), iconSize: 28 * tileScale, color: Colors.white),
+                                  IconButton(onPressed: () {deletingFile(file.name);}, icon: const Icon(Icons.delete), iconSize: 28 * tileScale, color: Colors.white),
+                                ],
+                                ),
+                            ),
+                          ),
                         ]      
                       ),
                     );

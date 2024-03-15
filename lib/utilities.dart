@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'dart:math';
 
 //
 // Journey, Trail, Category, Task Classes
@@ -196,4 +197,31 @@ IconData iconFromExtension(String ext) {
 
   // Default to paperclip icon
   return Icons.attachment;
+}
+
+
+
+//
+// Turns a number of bytes into its corresponding units
+// E.g., formatBytes(1928903, 3) returns '1.929 MB'
+//
+String formatBytes(int bytes, int decimalPlaces) {
+  if (bytes <= 0) return '0 B';
+  const suffixes = [ 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' ];
+  final i = (log(bytes) / log(1024)).floor();
+  final mantissa = (bytes / pow(1024, i)).toStringAsFixed(decimalPlaces);
+  return '$mantissa ${suffixes[i]}';
+}
+
+
+
+//
+// Scales down the size of a file name based on how long it is
+// To make the file name more readable
+//
+double scaleFileName(String name) {
+  double scale = 5 / pow(name.length, 0.55);
+  if (scale < 0.65) scale = 0.65;
+  if (scale > 1) scale = 1;
+  return scale;
 }
