@@ -215,13 +215,14 @@ class _TrailMaptaskState extends State<TrailMaptask> {
 
                           TextField(
                             decoration: null,
-                            maxLength: 4,
+                            maxLength: 5,
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly
                             ],
                             controller: minutesSpentController,
                             onChanged: (String contents) {
+                              if (contents.isEmpty) contents = '0';
                               int val = int.parse(contents);
                               appState.selectedTrail.categories[widget.trailMapIndex].tasks[widget.trailMapSubindex].minutesSpent = val;
                               minutesSpentController.text = val.toString();
