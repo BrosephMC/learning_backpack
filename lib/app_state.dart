@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 
-
+//1.1.#
 class MyAppState extends ChangeNotifier {
   int numcategorys = 0;
   List<int> tasksPercategory = [];
@@ -13,19 +13,23 @@ class MyAppState extends ChangeNotifier {
 
   List<PlatformFile> files = [];
 
+  //1.1.0
   void setTrailMapFromList(List< List< List<String> > > trailMapDesc) {
     numcategorys = trailMapDesc.length;
 
+    //1.1.1
     tasksPercategory = List<int>.generate(
       numcategorys,
       (int index) => trailMapDesc[index].length - 1
     );
 
+    //1.1.2
     categoryTitles = List<String>.generate(
       numcategorys,
       (int index) => trailMapDesc[index][0][0]
     );
 
+    //1.1.3
     taskTitlesPercategory = List< List<String> >.generate(
       numcategorys,
       (int outIndex) => List<String>.generate(
@@ -34,6 +38,7 @@ class MyAppState extends ChangeNotifier {
       )
     );
 
+    //1.1.4
     numDescriptionsPertask = List< List<int> >.generate(
       numcategorys,
       (int categoryIndex) => List<int>.generate(
@@ -42,6 +47,7 @@ class MyAppState extends ChangeNotifier {
       )
     );
 
+    //1.1.5
     taskDescriptionsPertask = List< List< List<String> > >.generate(
       numcategorys,
       (int categoryIndex) => List< List<String> >.generate(
@@ -53,6 +59,7 @@ class MyAppState extends ChangeNotifier {
       )
     );
 
+    //1.1.6
     trailMapSelected = List< List<int> >.generate(
       numcategorys,
       (int index) => List<int>.generate(tasksPercategory[index], (int index) => 0)
