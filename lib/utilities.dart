@@ -13,6 +13,26 @@ class Journey {
 
   @override
   String toString() => 'Journey(name: $name, trails: $trails)';
+
+  double getPercentage(){
+    int completed = 0;
+    int total = 0;
+    for(var tr in trails){
+      for(var c in tr.categories){
+        for(var t in c.tasks){
+          if(t.status == 2){
+            completed++;
+          }
+          total++;
+        }
+      }
+    }
+    if(total != 0){
+      return completed/total;
+    } else {
+      return 0;
+    }
+  }
 }
 
 class Trail {
@@ -23,6 +43,24 @@ class Trail {
 
   @override
   String toString() => 'Trail(name: $name, categories: $categories)';
+
+  double getPercentage(){
+    int completed = 0;
+    int total = 0;
+    for(var c in categories){
+      for(var t in c.tasks){
+        if(t.status == 2){
+          completed++;
+        }
+        total++;
+      }
+    }
+    if(total != 0){
+      return completed/total;
+    } else {
+      return 0;
+    }
+  }
 }
 
 class Category {
@@ -33,6 +71,22 @@ class Category {
 
   @override
   String toString() => 'Category(name: $name, tasks: $tasks)';
+
+  double getPercentage(){
+    int completed = 0;
+    int total = 0;
+    for(var t in tasks){
+      if(t.status == 2){
+        completed++;
+      }
+      total++;
+    }
+    if(total != 0){
+      return completed/total;
+    } else {
+      return 0;
+    }
+  }
 }
 
 class Task {
