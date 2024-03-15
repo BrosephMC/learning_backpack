@@ -12,6 +12,7 @@ class MyAppState extends ChangeNotifier {
   void selectTrailMap(Trail trailParam){
     selectedTrail = trailParam;
     notifyListeners();
+    print("selectedTrail from appstate $selectedTrail");
   }
   void loadJourneys(List<Journey> journeysParam){
     journeys = journeysParam;

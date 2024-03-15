@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:learning_backpack/app_state.dart';
 import 'package:learning_backpack/utilities.dart';
 
 class JourneysPage extends StatefulWidget {
@@ -10,10 +12,17 @@ class JourneysPage extends StatefulWidget {
 
 class _JourneysPageState extends State<JourneysPage> {
   int _selectedIndex = 0;
-  var import = parseJourneys("assets/sample2.txt");
+  var journeys = [];
+  // var selectedTrail = Trail("title", []);
 
   @override
   Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    journeys = appState.journeys;
+    // selectedTrail = appState.selectedTrail;
+    // print("Journeys $journeys");
+    print("selectedtrail journeys ${appState.selectedTrail}");
+
     return Scaffold(
       body: Row(
         children: <Widget>[
@@ -37,17 +46,18 @@ class _JourneysPageState extends State<JourneysPage> {
           ),
           const VerticalDivider(thickness: 1, width: 1),
           Expanded(
-            child: _getPage(_selectedIndex),
+            child: _getPage(_selectedIndex, appState),
           ),
         ],
       ),
     );
+    
   }
 
   List<NavigationRailDestination> _buildNavRailDestinations() {
     // Define your list of navigation rail items here
     List<NavigationRailDestination> destinations = [
-      for(var journey in import!)
+      for(var journey in journeys)
         NavigationRailDestination(
         icon: const Icon(Icons.public),
         label: SizedBox(
@@ -64,7 +74,7 @@ class _JourneysPageState extends State<JourneysPage> {
     return destinations;
   }
 
-  Widget _getPage(int index) {
+  Widget _getPage(int index, appState) {
     return ListView(
       restorationId: 'list_demo_list_view',
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -73,7 +83,7 @@ class _JourneysPageState extends State<JourneysPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Text(
-                  "${import![index].name} Journey",
+                  "${journeys[index].name} Journey",
                   style: const TextStyle(fontSize: 20),
                 ),
                 const Text("25% Done"),
@@ -84,10 +94,13 @@ class _JourneysPageState extends State<JourneysPage> {
                 ),
               ],
             ),
-        for (int i = 0; i < import![index].trails.length; i++)
+        for (int i = 0; i < journeys[index].trails.length; i++)
           ListTile(
             onTap: () {
               // print("$index was pressed!");
+              appState.selectTrailMap(
+                journeys[index].trails[i]
+              );
             },
             visualDensity: VisualDensity.comfortable,
             leading: ExcludeSemantics(
@@ -119,7 +132,7 @@ class _JourneysPageState extends State<JourneysPage> {
                   Flexible(
                     child:
                       Text(
-                        "Trail: ${import![index].trails[i].name}  ", 
+                        "Trail: ${journeys[index].trails[i].name}  ", 
                         maxLines: 5, 
                         softWrap: true,
                       ),

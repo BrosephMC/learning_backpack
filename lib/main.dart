@@ -31,8 +31,8 @@ class LearningBackpackApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => MyAppState()..selectTrailMap(
-        parseJourneys("assets/sample2.txt")![0].trails[1]
+      create: (context) => MyAppState()..loadJourneys(
+        parseJourneys("assets/sample2.txt")!
       ),
       child: const SafeArea(
         child: MaterialApp(

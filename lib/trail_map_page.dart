@@ -10,6 +10,7 @@ class TrailMapPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var selectedTrail = appState.selectedTrail;
+    print("selectedTrail from trail_map_page $selectedTrail");
 
     return DefaultTabController(
       initialIndex: 0,

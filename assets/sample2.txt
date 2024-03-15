@@ -1,5 +1,14 @@
 $Internal
  #Intentionality, planning, learning, & teaching
+  >Intentionality
+   -my task
+  >planning
+   -my other task
+  >learning
+   -my other other task
+  >teaching
+  -teach task
+  -another teaching task
  #Resource acquisition & stewardship
   >MPD Foundations
    -Read “The God Ask”
