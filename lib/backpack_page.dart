@@ -19,22 +19,21 @@ class BackpackPage extends StatefulWidget{
 
 class _BackpackPageState extends State<BackpackPage>{
   SortOptions? selectedOption;
-  List<PlatformFile> files =  [];//list of files
+  List<PlatformFile> files =  []; // List of files in the backpack
   @override
   
-//#########################################################################
-  //Method to initialize the file list and retrieve values from storage
+  // Method to initialize the file list and retrieve values from storage
   void initState(){
       super.initState();
       loadFiles();
   }
-//#########################################################################
+  
   @override
   Widget build(BuildContext context) {
-    const tileSize = 170;
-    int numTiles = (MediaQuery.of(context).size.width / tileSize).floor();
-    if (numTiles < 2) numTiles = 2;
-    double tileScale = (MediaQuery.of(context).size.width / tileSize) / numTiles;
+    const tileSize = 170; // How big a full-sized tile should be
+    int numTiles = (MediaQuery.of(context).size.width / tileSize).floor(); // How many tiles can we actually fit on the screen?
+    if (numTiles < 2) numTiles = 2; // (No less than 2 to improve readability)
+    double tileScale = (MediaQuery.of(context).size.width / tileSize) / numTiles; // How much are the tiles being scaled by, if we can't evenly fit a whole number of tiles?
 
     return Center(
       child: Column(
@@ -52,20 +51,19 @@ class _BackpackPageState extends State<BackpackPage>{
                   setState((){
                     files += result.files;
                   });
-        //#########################################################################
-                  //For file saving
+                  
+                  // For file saving
                   for(var theFile in result.files){
                     File savedFile = File(theFile.path!);
                     await saveFile(theFile.name, savedFile);
                     print("$savedFile");
                     print("file saved");
                   }
-        //#########################################################################
+                  
                 },
                 child: const Text('File upload'),
               ),
               
-              // Insert the code for the drop down UI here
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: DropdownMenu<SortOptions>(
@@ -113,7 +111,7 @@ class _BackpackPageState extends State<BackpackPage>{
             child: GridView.count(
                   primary: false,
                   padding: const EdgeInsets.all(20),
-                  crossAxisSpacing: 5 * tileScale,
+                  crossAxisSpacing: 5 * tileScale, // Any "* tileScale" means we are scaling it with the tile itself
                   mainAxisSpacing: 5 * tileScale,
                   crossAxisCount: numTiles,
                   children: List.generate(files.length, (index){
@@ -125,7 +123,6 @@ class _BackpackPageState extends State<BackpackPage>{
                       color: Colors.blue,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        //crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
                             flex: 5,
@@ -154,7 +151,7 @@ class _BackpackPageState extends State<BackpackPage>{
                                       file.name,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize: 15 * tileScale * scaleFileName(file.name),
+                                        fontSize: 15 * tileScale * scaleFileName(file.name), // File name gets smaller the longer it is
                                         color: Colors.white
                                       )
                                     ),
@@ -233,8 +230,8 @@ class _BackpackPageState extends State<BackpackPage>{
       ),
     );
   }
-//#########################################################################
-  //Method to open files
+  
+  // Method to open files
   void openTheFile(String filename) async{
     try {
       final file = await _localFile(filename);
@@ -245,7 +242,7 @@ class _BackpackPageState extends State<BackpackPage>{
     }
     
   }
-    //Obtain the Application Documents directory (where files will be stored, in the App's system-allocated, protected folders
+    // Obtain the Application Documents directory (where files will be stored, in the App's system-allocated, protected folders
   Future<String> get _localPath async {
     var directory = Directory('');
     var tempDir = Directory('');
@@ -258,20 +255,20 @@ class _BackpackPageState extends State<BackpackPage>{
       tempDir = await getApplicationDocumentsDirectory();
       String firstHalf = tempDir.path;
       String fullDir = p.join('$firstHalf', 'my_learning_backpack');
-      directory = await Directory('$fullDir').create(recursive: true);
+      directory = await Directory('$fullDir').create(recursive: true); // Create documents/my_learning_backpack folder for our files
     }
     
     
     return directory.path;
   }
 
-  //Create a reference to the file location
+  // Create a reference to the file location
   Future<File> _localFile(String filename) async {
     final path = await _localPath;
     return File('$path/$filename');
   }
 
-  //code for saving files 
+  // Code for saving files 
   Future<void> saveFile(String filename, File file) async {
     final destinationFile = await _localFile(filename);
     try {
@@ -281,7 +278,7 @@ class _BackpackPageState extends State<BackpackPage>{
     }
   }
 
-  //code to delete files of the passed filename
+  // Code to delete files of the passed filename
   Future<void> deleteFile(String filename) async {
     try {
       final file = await _localFile(filename);
@@ -292,7 +289,7 @@ class _BackpackPageState extends State<BackpackPage>{
     }
   }
 
-  //Method to delete files and remove from the working file list that is being displayed
+  // Method to delete files and remove from the working file list that is being displayed
   void deletingFile(String filename){
     deleteFile(filename);
     setState((){
@@ -301,7 +298,7 @@ class _BackpackPageState extends State<BackpackPage>{
     
   }
 
-  //Method to read a file directory and pass the files into a file list
+  // Method to read a file directory and pass the files into a file list
   Future<List<PlatformFile>> getDir() async{
     List<PlatformFile> theFiles = [];
     bool userfile = false;
@@ -314,14 +311,14 @@ class _BackpackPageState extends State<BackpackPage>{
     for (var file in myDir.listSync()) {
         if (file is File) {
           // Await the file length operation before adding the PlatformFile object
-          //check if file is accessible to the user
+          // Check if file is accessible to the user
           try {
             await file.openRead();
             userfile = true;
           } catch (e){
             userfile = false;
           }
-          //add files to the file list from the local app storage
+          // Add files to the file list from the local app storage
           if (userfile){
             int size = await file.length();
             String filename = basename(file.path);
@@ -339,7 +336,7 @@ class _BackpackPageState extends State<BackpackPage>{
     return theFiles;
   }
   
-  //Method to load files from storage to a file list
+  // Method to load files from storage to a file list
   void loadFiles() async{
     List<PlatformFile> loadedFiles = await getDir();
     setState(() {
@@ -368,7 +365,6 @@ class _BackpackPageState extends State<BackpackPage>{
   }
 }
 
-//#########################################################################
 }
 
 enum SortOptions {
