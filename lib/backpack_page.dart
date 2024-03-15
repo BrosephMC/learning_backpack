@@ -247,11 +247,16 @@ class _BackpackPageState extends State<BackpackPage>{
     //Obtain the Application Documents directory (where files will be stored, in the App's system-allocated, protected folders
   Future<String> get _localPath async {
     var directory = Directory('');
-    if(Platform.isIOS || Platform.isAndroid){
-      directory = await getApplicationDocumentsDirectory();
-    }else{
-      directory = await Directory('assets/app_storage').create(recursive: true);
+    var tempDir = Directory('');
+    if (Platform.isWindows) {
+      tempDir = await getApplicationDocumentsDirectory();
+      directory = Directory('$tempDir/my_learning_backpack');
+      print("$directory");
     }
+    else{
+      directory = await getApplicationDocumentsDirectory();
+    }
+    
     
     return directory.path;
   }
