@@ -40,6 +40,10 @@ This file contains a numbered index of the program's functionalities:
 	2.1.#
 
 
-3.#.# Badges Module
+3.#.# Badges Module (Not developed)
 
-	3.1.#
+	3.1.# UI implementation
+
+4.#.# Main function
+
+	4.1.# 
