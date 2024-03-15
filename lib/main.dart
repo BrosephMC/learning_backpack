@@ -12,6 +12,7 @@ void main() {
   runApp(const LearningBackpackApp());
 }
 
+//this will be removed
 List<List<String>> readFromFile(String filePath) {
   var file = File(filePath);
   var lines = file.readAsLinesSync();
@@ -34,6 +35,89 @@ List<List<String>> readFromFile(String filePath) {
   }
 
   return result;
+}
+
+class Journey {
+  String name;
+  List<Trail> trails;
+
+  Journey(this.name, this.trails);
+
+  @override
+  String toString() => 'Journey(name: $name, trails: $trails)';
+}
+
+class Trail {
+  String name;
+  List<Category> categories;
+
+  Trail(this.name, this.categories);
+
+  @override
+  String toString() => 'Trail(name: $name, categories: $categories)';
+}
+
+class Category {
+  String name;
+  List<Task> tasks;
+
+  Category(this.name, this.tasks);
+
+  @override
+  String toString() => 'Category(name: $name, tasks: $tasks)';
+}
+
+class Task {
+  String name;
+  String description;
+
+  Task(this.name, this.description);
+
+  @override
+  String toString() => 'Task(name: $name, description: $description)';
+}
+
+//Must end the file with 2 newlines
+List<Journey>? parseJourneys(String filePath) {
+  try{
+  final file = File(filePath);
+  final lines = file.readAsLinesSync();
+
+  List<Journey> journeys = [];
+  Journey? currentJourney;
+  Trail? currentTrail;
+  Category? currentCategory;
+  Task? currentTask;
+
+  for (final line in lines) {
+    if (line.startsWith('\$')) {
+      // Journey
+      currentJourney = Journey(line.substring(1).trim(), []);
+    } else if (line.startsWith(' #')) {
+      // Trail
+      currentTrail = Trail(line.substring(2).trim(), []);
+      currentJourney!.trails.add(currentTrail);
+    } else if (line.startsWith('  >')) {
+      // Category
+      currentCategory = Category(line.substring(3).trim(), []);
+      currentTrail!.categories.add(currentCategory);
+    } else if (line.startsWith('   -')) {
+      // Task
+      currentTask = Task(line.substring(4).trim(), "");
+      currentCategory!.tasks.add(currentTask);
+    } else if (line.startsWith('    *')) {
+      // Task Description
+      currentTask!.description = line.substring(5).trim();
+    } else if (line.isEmpty) {
+      journeys.add(currentJourney!);
+    }
+  }
+
+  return journeys;
+  } catch (e) {
+    print("could not read from file");
+    return [];
+  }
 }
 
 Icon getIconFromWord(String category){
@@ -581,6 +665,7 @@ class JourneysPage extends StatefulWidget {
 
 class _JourneysPageState extends State<JourneysPage> {
   int _selectedIndex = 0;
+  var import = parseJourneys("assets/sample2.txt");
 
   @override
   Widget build(BuildContext context) {
@@ -617,84 +702,88 @@ class _JourneysPageState extends State<JourneysPage> {
   List<NavigationRailDestination> _buildNavRailDestinations() {
     // Define your list of navigation rail items here
     List<NavigationRailDestination> destinations = [
-      const NavigationRailDestination(
-        icon: Icon(Icons.public),
+      for(var journey in import!)
+        NavigationRailDestination(
+        icon: const Icon(Icons.public),
         label: SizedBox(
           width: 120.0,
           child: Text(
-            "Very Long Label That Needs to Be Abbreviated",
+            journey.name,
             maxLines: 1,
             overflow: TextOverflow.fade,
             textAlign: TextAlign.center,
           ),
         ),
       ),
-      const NavigationRailDestination(
-        icon: Icon(Icons.public),
-        label: Text('Second Item'),
-      ),
-      const NavigationRailDestination(
-        icon: Icon(Icons.public),
-        label: Text('Third Item'),
-      ),
     ];
     return destinations;
   }
 
   Widget _getPage(int index) {
-    switch (index) {
-      case 0:
-        return const Center(child: Text('Very Long Title That Doesn\'t Need to Be Abbreviated'));
-      case 1:
-        return ListView(
-          // title: Text("title"),
-          restorationId: 'list_demo_list_view',
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          children: [
-            const Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    "Journey Title - 25% Done",
-                    style: TextStyle(fontSize: 20),
-                    textAlign: TextAlign.center,
-                  ),
+    return ListView(
+      restorationId: 'list_demo_list_view',
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      children: [
+        Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text(
+                  "${import![index].name} Journey",
+                  style: const TextStyle(fontSize: 20),
                 ),
-                CircularProgressIndicator(
-                  value: 0.25,
+                const Text("25% Done"),
+                const Padding(padding: EdgeInsets.all(5.0)),
+                const LinearProgressIndicator(
+                  value: 0.5,
                   semanticsLabel: 'Linear progress indicator',
-                  color: Colors.blue,
-                  backgroundColor: Colors.grey,
                 ),
               ],
             ),
-            for (int index = 1; index < 11; index++)
-              ListTile(
-                onTap: () {
-                  //print("$index was pressed!");
-                },
-                leading: ExcludeSemantics(
-                  child: CircleAvatar(
-                      child: Row(
-                        children: [
-                          const Icon(Icons.park),
-                          Text('$index',)
-                          ],
-                      )
-                  ),
-                ),
-                title: Text(
-                  "trail $index",
-                ),
+        for (int i = 0; i < import![index].trails.length; i++)
+          ListTile(
+            onTap: () {
+              // print("$index was pressed!");
+            },
+            visualDensity: VisualDensity.comfortable,
+            leading: ExcludeSemantics(
+              child: CircleAvatar(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      const CircularProgressIndicator(
+                        value: 0.25,
+                        color: Colors.green,
+                        backgroundColor: Colors.grey,
+                        strokeWidth: 10.0,
+                        // strokeCap: StrokeCap.round,
+                      ),
+                      const Icon(Icons.park, size: 40.0, color: Color.fromARGB(255, 83, 83, 83),),
+                      Center(
+                        child: Text(
+                          "$i",
+                          style: const TextStyle(color: Colors.white),
+                        )
+                      ),
+                    ],
+                  )
               ),
-          ],
-        );
-      case 2:
-        return const Center(child: Text('Third Item'));
-      default:
-        return Container();
-    }
+            ),
+            title: 
+              Row(
+                children: [
+                  Flexible(
+                    child:
+                      Text(
+                        "Trail: ${import![index].trails[i].name}  ", 
+                        maxLines: 5, 
+                        softWrap: true,
+                      ),
+                  ),
+                ],
+              ),
+            )
+      ],
+    );
   }
 }
 
