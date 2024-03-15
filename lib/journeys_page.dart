@@ -96,53 +96,58 @@ class _JourneysPageState extends State<JourneysPage> {
               ],
             ),
         for (int i = 0; i < journeys[index].trails.length; i++)
-          ListTile(
-            tileColor: journeys[index].trails[i] == appState.selectedTrail ? Colors.blueGrey : null,
-            onTap: () {
-              // print("$index was pressed!");
-              appState.selectTrailMap(
-                journeys[index].trails[i]
-              );
-            },
-            visualDensity: VisualDensity.comfortable,
-            leading: ExcludeSemantics(
-              child: CircleAvatar(
-                  child: Stack(
-                    fit: StackFit.expand,
+          Container(
+            color: journeys[index].trails[i] == appState.selectedTrail ? Colors.blueGrey : Colors.transparent,
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: ListTile(
+                onTap: () {
+                  // print("$index was pressed!");
+                  appState.selectTrailMap(
+                    journeys[index].trails[i]
+                  );
+                },
+                visualDensity: VisualDensity.comfortable,
+                leading: ExcludeSemantics(
+                  child: CircleAvatar(
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          CircularProgressIndicator(
+                            value: journeys[index].trails[i].getPercentage(),
+                            color: Colors.green,
+                            backgroundColor: Colors.grey,
+                            strokeWidth: 10.0,
+                            // strokeCap: StrokeCap.round,
+                          ),
+                          const Icon(Icons.park, size: 40.0, color: Color.fromARGB(255, 83, 83, 83),),
+                          Center(
+                            child: Text(
+                              "$i",
+                              style: const TextStyle(color: Colors.white),
+                            )
+                          ),
+                        ],
+                      )
+                  ),
+                ),
+                title: 
+                  Row(
                     children: [
-                      CircularProgressIndicator(
-                        value: journeys[index].trails[i].getPercentage(),
-                        color: Colors.green,
-                        backgroundColor: Colors.grey,
-                        strokeWidth: 10.0,
-                        // strokeCap: StrokeCap.round,
-                      ),
-                      const Icon(Icons.park, size: 40.0, color: Color.fromARGB(255, 83, 83, 83),),
-                      Center(
-                        child: Text(
-                          "$i",
-                          style: const TextStyle(color: Colors.white),
-                        )
+                      Flexible(
+                        child:
+                          Text(
+                            "Trail: ${journeys[index].trails[i].name}  ", 
+                            maxLines: 5, 
+                            softWrap: true,
+                            style: TextStyle(color: journeys[index].trails[i] == appState.selectedTrail ? Colors.white : null,)
+                          ),
                       ),
                     ],
-                  )
-              ),
-            ),
-            title: 
-              Row(
-                children: [
-                  Flexible(
-                    child:
-                      Text(
-                        "Trail: ${journeys[index].trails[i].name}  ", 
-                        maxLines: 5, 
-                        softWrap: true,
-                        style: TextStyle(color: journeys[index].trails[i] == appState.selectedTrail ? Colors.white : null,)
-                      ),
                   ),
-                ],
-              ),
-            )
+                ),
+            ),
+          )
       ],
     );
   }
