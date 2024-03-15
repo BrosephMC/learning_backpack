@@ -94,12 +94,12 @@ class Task {
   List<String> description; // One line per element
   int status;
   String notes;
-  double hoursSpent; // How long they have spent on the task
+  int minutesSpent; // How long they have spent on the task
 
-  Task(this.name, this.description, this.status, this.notes, this.hoursSpent);
+  Task(this.name, this.description, this.status, this.notes, this.minutesSpent);
 
   @override
-  String toString() => 'Task(name: $name, description: $description, notes: $notes, hours spent: $hoursSpent)';
+  String toString() => 'Task(name: $name, description: $description, notes: $notes, minutes spent: $minutesSpent)';
 }
 
 
