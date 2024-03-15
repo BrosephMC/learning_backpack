@@ -16,11 +16,10 @@ This file contains a numbered index of the program's functionalities:
 -Sections of the document use # as a wildcard (used to represent a range of numbers)
 
 -Inline comments are brief, enumerated comments in this document are in-depth:
-	
-   *Inline:		//Explanation of how the code works, step-by-step in sentences
-			class Code (arguments) {code.doThings()}
-
-   *Enumerated:		(File line number:line number in current subsection)	Code sample //With comments to explain operations line-by-line
+		#.#.# Name of thing or short comment here
+		-Explanation of how the code works, step-by-step in sentences
+		-class Code (arguments) {code.doThings()}
+		-(File line number:line number in current subsection)	Code sample //With comments to explain operations line-by-line
 
 
 
