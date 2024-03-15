@@ -2,9 +2,11 @@ import 'package:flutter/material.dart'; // Needed for widgets
 import 'package:provider/provider.dart'; // Needed to watch MyAppState
 import 'package:flutter/services.dart'; // Needed for TextInputFormatter
 
-// Project external files
+// Necessary modules from this project
 import 'package:learning_backpack/app_state.dart';
 import 'package:learning_backpack/utilities.dart';
+
+
 
 class TrailMapPage extends StatelessWidget {
   const TrailMapPage({super.key});
@@ -15,6 +17,7 @@ class TrailMapPage extends StatelessWidget {
     var selectedTrail = appState.selectedTrail;
     print("selectedTrail from trail_map_page $selectedTrail");
 
+    // Keeps track of which Journey tab is selected
     return DefaultTabController(
       initialIndex: 0,
       length: selectedTrail.categories.length,

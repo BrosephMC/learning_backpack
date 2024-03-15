@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
-import 'dart:io';
+import 'package:flutter/material.dart'; // Needed for widgets
+import 'dart:io'; // Needed for file classes
+import 'package:file_picker/file_picker.dart'; // Needed for loading, opening, and selecting files
+import 'package:open_file/open_file.dart'; // Needed for loading, opening, and selecting files
+import 'package:path/path.dart' as p; // Needed for file path manipulation
+import 'package:path_provider/path_provider.dart'; // Needed to access system default paths
 
-import 'package:file_picker/file_picker.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path/path.dart' as p;
-import 'package:path/path.dart';
-
+// Necessary modules from this project
 import 'package:learning_backpack/utilities.dart';
-import 'package:path_provider/path_provider.dart';
+
 
 
 class BackpackPage extends StatefulWidget{
@@ -321,7 +321,7 @@ class _BackpackPageState extends State<BackpackPage>{
           // Add files to the file list from the local app storage
           if (userfile){
             int size = await file.length();
-            String filename = basename(file.path);
+            String filename = p.basename(file.path);
             theFiles.add(PlatformFile(name: filename, size: size));
           }
           else{

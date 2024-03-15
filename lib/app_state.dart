@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:learning_backpack/utilities.dart';
+import 'package:flutter/material.dart'; // Needed for ChangeNotifier for MyAppState
+import 'package:learning_backpack/utilities.dart'; // Needed for Journey, Trail, etc. classes
+
 
 
 // Keeps track of user session data
