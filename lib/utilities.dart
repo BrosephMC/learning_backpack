@@ -186,7 +186,7 @@ Icon getIconFromWord(String phrase) {
       'icon' : Icons.ondemand_video
     },
     {
-      'keywords' : <String>[ 'finance', 'money', 'currency' ],
+      'keywords' : <String>[ 'financ', 'money', 'currency' ],
       'icon' : Icons.attach_money
     },
     {
