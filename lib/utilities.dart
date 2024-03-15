@@ -40,11 +40,12 @@ class Task {
   List<String> description; // One line per element
   int status;
   String notes;
+  double hoursSpent; // How long they have spent on the task
 
-  Task(this.name, this.description, this.status, this.notes);
+  Task(this.name, this.description, this.status, this.notes, this.hoursSpent);
 
   @override
-  String toString() => 'Task(name: $name, description: $description, notes: $notes)';
+  String toString() => 'Task(name: $name, description: $description, notes: $notes, hours spent: $hoursSpent)';
 }
 
 
@@ -77,7 +78,7 @@ List<Journey>? parseJourneys(String filePath) {
       currentTrail!.categories.add(currentCategory);
     } else if (line.startsWith('   -')) {
       // Task
-      currentTask = Task(line.substring(4).trim(), [], 0, "");
+      currentTask = Task(line.substring(4).trim(), [], 0, "", 0);
       currentCategory!.tasks.add(currentTask);
     } else if (line.startsWith('    *')) {
       // Task Description
