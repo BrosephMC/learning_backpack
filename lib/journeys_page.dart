@@ -97,6 +97,7 @@ class _JourneysPageState extends State<JourneysPage> {
             ),
         for (int i = 0; i < journeys[index].trails.length; i++)
           ListTile(
+            tileColor: journeys[index].trails[i] == appState.selectedTrail ? Colors.blueGrey : null,
             onTap: () {
               // print("$index was pressed!");
               appState.selectTrailMap(
@@ -136,6 +137,7 @@ class _JourneysPageState extends State<JourneysPage> {
                         "Trail: ${journeys[index].trails[i].name}  ", 
                         maxLines: 5, 
                         softWrap: true,
+                        style: TextStyle(color: journeys[index].trails[i] == appState.selectedTrail ? Colors.white : null,)
                       ),
                   ),
                 ],
