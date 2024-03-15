@@ -241,12 +241,16 @@ class _BackpackPageState extends State<BackpackPage>{
   Future<void> sortItemList(List<PlatformFile> itemList, SortMode sortBy) async {
   switch (sortBy) {
     case SortMode.name:
-      itemList.sort((a, b) => a.name.compareTo(b.name));    // Sort by file name (alphabetical)
+      itemList.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));    // Sort by file name (alphabetical)
       break;
-    case SortMode.size:
-      itemList.sort((a, b) => a.size.compareTo(b.size));    // Sort by file size (in bytes)
+    case SortMode.smToLg:
+      itemList.sort((a, b) => a.size.compareTo(b.size));    // Sort by file size (in bytes) smallest first
+      break;
+    case SortMode.lgToSm:
+      itemList.sort((a, b) => b.size.compareTo(a.size));    // Sort by file size (in bytes) largest first (inverse of the above)
       break;
     case SortMode.extension:
+      //itemList.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));    // Sort by file name (alphabetical) to keep sorting via extension
       itemList.sort((a, b) => a.extension!.compareTo(b.extension!));    // Sort by file type (extension)
       break;
     default:
@@ -259,7 +263,8 @@ class _BackpackPageState extends State<BackpackPage>{
 
 enum SortOptions {
   name,
-  size,
+  smToLg,
+  lgToSm,
   extension,
 }
 
@@ -268,8 +273,10 @@ extension SortOptionsExtension on SortOptions {
     switch (this) {
       case SortOptions.name:
         return 'Name';
-      case SortOptions.size:
-        return 'Size';
+      case SortOptions.smToLg:
+        return 'Smallest';
+      case SortOptions.lgToSm:
+        return 'Largest';
       case SortOptions.extension:
         return 'Extension';
     }
@@ -279,8 +286,10 @@ extension SortOptionsExtension on SortOptions {
     switch (this) {
       case SortOptions.name:
         return SortMode.name;
-      case SortOptions.size:
-        return SortMode.size;
+      case SortOptions.smToLg:
+        return SortMode.smToLg;
+      case SortOptions.lgToSm:
+        return SortMode.lgToSm;
       case SortOptions.extension:
         return SortMode.extension;
     }
@@ -289,6 +298,7 @@ extension SortOptionsExtension on SortOptions {
 
 enum SortMode {
   name,
-  size,
+  smToLg,
+  lgToSm,
   extension,
 }

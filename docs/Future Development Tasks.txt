@@ -21,7 +21,9 @@ REQUIRED CLIENT TASKS:
 NICE TO HAVE FEATURES:
 -A graph/pie chart chowing a user's competencies and skills based upon progress
 -Show related competencies/trails in UI based upon tags
-
+-The Sort function (backpack) could use more tags to sort by
+-Sorting backpack items by extension currently doesn't sort entries within groups of extension types, i.e.PDFs are grouped, but not alphebetized or sorted by size
+	*Current implementation sorts each extension group alphatetically, but there may be edge cases where this isn't useful.
 
 EXPANDING FUNCTIONALITY AND SECURITY:
 - Change the path_provider functionality (for saving files in the backpack module) to file_saver for expanded functionality (https://pub.dev/packages/file_saver)
