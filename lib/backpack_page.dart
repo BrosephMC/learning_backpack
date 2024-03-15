@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:open_file/open_file.dart';
+import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 
 import 'package:learning_backpack/utilities.dart';
@@ -248,13 +249,16 @@ class _BackpackPageState extends State<BackpackPage>{
   Future<String> get _localPath async {
     var directory = Directory('');
     var tempDir = Directory('');
-    if (Platform.isWindows) {
-      tempDir = await getApplicationDocumentsDirectory();
-      directory = Directory('$tempDir/my_learning_backpack');
+    
+    if (Platform.isAndroid || Platform.isIOS){
+      directory = await getApplicationDocumentsDirectory();
       print("$directory");
     }
     else{
-      directory = await getApplicationDocumentsDirectory();
+      tempDir = await getApplicationDocumentsDirectory();
+      String firstHalf = tempDir.path;
+      String fullDir = p.join('$firstHalf', 'my_learning_backpack');
+      directory = await Directory('$fullDir').create(recursive: true);
     }
     
     
