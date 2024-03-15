@@ -121,7 +121,7 @@ class _JourneysPageState extends State<JourneysPage> {
                           const Icon(Icons.park, size: 40.0, color: Color.fromARGB(255, 83, 83, 83),),
                           Center(
                             child: Text(
-                              "$i",
+                              "${i + 1}",
                               style: const TextStyle(color: Colors.white),
                             )
                           ),
