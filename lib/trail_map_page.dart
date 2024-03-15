@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/material.dart'; // Needed for widgets
+import 'package:provider/provider.dart'; // Needed to watch MyAppState
+import 'package:flutter/services.dart'; // Needed for TextInputFormatter
+
+// Project external files
 import 'package:learning_backpack/app_state.dart';
 import 'package:learning_backpack/utilities.dart';
-import 'package:flutter/services.dart';
 
 class TrailMapPage extends StatelessWidget {
   const TrailMapPage({super.key});
@@ -23,11 +25,15 @@ class TrailMapPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
+                // Trail percent completion text
                 Text(
                   "${selectedTrail.name} - ${(selectedTrail.getPercentage()*100).toInt()}%",
                   style: const TextStyle(fontSize: 20),
                 ),
+
                 const Padding(padding: EdgeInsets.all(5.0)),
+
+                // Trail percent completion progress bar
                 LinearProgressIndicator(
                   value: selectedTrail.getPercentage(),
                   semanticsLabel: 'Linear progress indicator',
@@ -38,12 +44,17 @@ class TrailMapPage extends StatelessWidget {
           bottom: TabBar(
             isScrollable: true,
             tabAlignment: TabAlignment.center,
+            
+            // Create the tabs for the categories in the current trail
             tabs: <Widget>[
               for (int i = 0; i < selectedTrail.categories.length; i++)
                 Tab(
+                  // Intuitively assign an icon based on the name of the category
                   icon: getIconFromWord(selectedTrail.categories[i].name),
                   child: Text(
                     selectedTrail.categories[i].name,
+                    
+                    // Strikethrough the name if it is fully completed
                     style: selectedTrail.categories[i].getPercentage() == 1 ? const TextStyle(decoration: TextDecoration.lineThrough) : null,
                   )
                 ),
@@ -51,16 +62,21 @@ class TrailMapPage extends StatelessWidget {
           ),
         ),
         body: TabBarView(
+          // Create different pages, one for each category in the trail
           children: <Widget>[
+            // Loop through the trail categories
             for (int i = 0; i < selectedTrail.categories.length; i++)
               Center(
-                child: TrailMapcategory(
+                child: TrailMapCategory(
                   title: selectedTrail.categories[i].name,
-                  children: <TrailMaptask>[
+                  children: <TrailMapTask>[
+                    // Loop through the tasks in the current trail category
                     for (int j = 0; j < selectedTrail.categories[i].tasks.length; j++)
-                      TrailMaptask(
+                      TrailMapTask(
                         title: selectedTrail.categories[i].tasks[j].name,
                         descriptionList: selectedTrail.categories[i].tasks[j].description,
+                        
+                        // We need to keep track of what trail and category we are in
                         trailMapIndex: i,
                         trailMapSubindex: j,
                       ),
@@ -74,11 +90,16 @@ class TrailMapPage extends StatelessWidget {
   }
 }
 
-class TrailMapcategory extends StatelessWidget {
-  final String title;
-  final List<TrailMaptask> children;
 
-  const TrailMapcategory({
+
+//
+// Trail Category class
+//
+class TrailMapCategory extends StatelessWidget {
+  final String title;
+  final List<TrailMapTask> children;
+
+  const TrailMapCategory({
     super.key,
     required this.title,
     required this.children
@@ -101,6 +122,8 @@ class TrailMapcategory extends StatelessWidget {
                 )
               ),
             ),
+            
+            // Add the child widgets (tasks)
             for (var child in children) child,
           ]
         ),
@@ -109,13 +132,18 @@ class TrailMapcategory extends StatelessWidget {
   }
 }
 
-class TrailMaptask extends StatefulWidget {
+
+
+//
+// Trail Task class
+//
+class TrailMapTask extends StatefulWidget {
   final String title;
-  final List<String> descriptionList; // One element per line
+  final List<String> descriptionList; // If the description is multiple lines, each line is a new element in this list
   final int trailMapIndex;
   final int trailMapSubindex;
 
-  const TrailMaptask({
+  const TrailMapTask({
     super.key,
     required this.title,
     required this.descriptionList,
@@ -124,21 +152,26 @@ class TrailMaptask extends StatefulWidget {
   });
 
   @override
-  State<TrailMaptask> createState() => _TrailMaptaskState();
+  State<TrailMapTask> createState() => _TrailMapTaskState();
 }
 
-class _TrailMaptaskState extends State<TrailMaptask> {
+class _TrailMapTaskState extends State<TrailMapTask> {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
 
+    // Create TextField controllers
     final notesController = TextEditingController();
-    notesController.text = appState.selectedTrail.categories[widget.trailMapIndex].tasks[widget.trailMapSubindex].notes;
-
     final minutesSpentController = TextEditingController();
+
+    // Load trail states from MyAppState, so that the value of the TextFields are retained throughout every build() and align with the saved values
+    notesController.text = appState.selectedTrail.categories[widget.trailMapIndex].tasks[widget.trailMapSubindex].notes;
     minutesSpentController.text = appState.selectedTrail.categories[widget.trailMapIndex].tasks[widget.trailMapSubindex].minutesSpent.toString();
 
-    int selected = appState.selectedTrail.categories[widget.trailMapIndex].tasks[widget.trailMapSubindex].status;
+    // The status of this task (0 = Not Started, 1 = In Progress, 2 = Completed)
+    int status = appState.selectedTrail.categories[widget.trailMapIndex].tasks[widget.trailMapSubindex].status;
+    
+    // The styles for each of the three Status buttons, in order from 0-2
     const List<String> messages = [ 'Not Started', 'In Progress', 'Complete' ];
     final List<Color> colors =[ Colors.red, Colors.orange, Colors.lightGreen[700]! ];
     const List<double> opacities = [ 0.22, 0.25, 0.32 ];
@@ -146,9 +179,13 @@ class _TrailMaptaskState extends State<TrailMaptask> {
 
     return Padding(
       padding: const EdgeInsets.all(8),
+
+      // An ExpansionTile will toggle showing its `children` when clicked
       child: ExpansionTile(
         title: Padding(
           padding: const EdgeInsets.only(bottom: 5),
+
+          // The title of this task
           child: Text(
             widget.title,
             style: const TextStyle(
@@ -160,24 +197,34 @@ class _TrailMaptaskState extends State<TrailMaptask> {
       
         subtitle: Row(
           children: <Widget>[
+            // Vertical spacer
             const SizedBox(
               width: 15
             ),
-      
+
+            // Create all three status buttons
             for (int i = 0; i < 3; i++)
               Tooltip(
                 message: messages[i],
+
+                // The Container creates the circle behind the button
                 child: Container(
                   decoration: BoxDecoration(
-                    color: selected == i ? colors[i].withOpacity(opacities[i]) : Colors.transparent,
+                    // Transparent unless selected
+                    color: status == i ? colors[i].withOpacity(opacities[i]) : Colors.transparent,
                     shape: BoxShape.circle
                   ),
+
                   child: IconButton(
                     icon: icons[i],
-                    color: selected == i ? colors[i] : Colors.grey,
+
+                    // Gray unless selected
+                    color: status == i ? colors[i] : Colors.grey,
+
+                    // Update the local state variable (status) AND the global MyAppState variable to keep track of the status of this task
                     onPressed: () {
                       setState(() {
-                        selected = i;
+                        status = i;
                         appState.selectedTrail.categories[widget.trailMapIndex].tasks[widget.trailMapSubindex].status = i;
                       });
                     },
@@ -186,10 +233,13 @@ class _TrailMaptaskState extends State<TrailMaptask> {
               ),
           ]
         ),
-      
+
+        // Click on a task to show more detail about it:
         children: <Widget>[
           Align(
             alignment: Alignment.topLeft,
+
+            // Wrap everything in a light gray color
             child: Container(
               width: double.infinity,
               decoration: const BoxDecoration(
@@ -204,6 +254,7 @@ class _TrailMaptaskState extends State<TrailMaptask> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                          // 'Minutes Spent:' text
                           const Text(
                             'Minutes Spent:',
                             style: TextStyle(
@@ -213,26 +264,34 @@ class _TrailMaptaskState extends State<TrailMaptask> {
                             ),
                           ),
 
+                          // The TextField to let the user enter the minutes they've spent on this task
                           TextField(
                             decoration: null,
                             maxLength: 5,
+
+                            // This ensures they can only type numbers, so nothing breaks
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly
                             ],
                             controller: minutesSpentController,
+
+                            // Update the local TextField content variable (minutesSpentController.text)
+                            // AND the global MyAppState variable to keep track of the minutes spent on this task
                             onChanged: (String contents) {
-                              if (contents.isEmpty) contents = '0';
+                              if (contents.isEmpty) contents = '0'; // Edge case of no input
                               int val = int.parse(contents);
                               appState.selectedTrail.categories[widget.trailMapIndex].tasks[widget.trailMapSubindex].minutesSpent = val;
                               minutesSpentController.text = val.toString();
                             }
                           ),
-                      
+
+                          // Horizontal spacer
                           const SizedBox(
                             height: 15
                           ),
-                      
+
+                          // 'Task Description:' Text
                           const Text(
                             'Task Description:',
                             style: TextStyle(
@@ -241,8 +300,10 @@ class _TrailMaptaskState extends State<TrailMaptask> {
                               fontSize: 16
                             ),
                           ),
-                      
+
+                          // Loop through all of the lines in this task description
                           for (var desc in widget.descriptionList)
+                            // This can be modified, currently each description line is a simple Text widget
                             Text(
                               desc,
                               style: const TextStyle(
@@ -253,6 +314,7 @@ class _TrailMaptaskState extends State<TrailMaptask> {
                       ),
                     ),
 
+                    // Vertical spacer
                     const SizedBox(width: 25),
 
                     Expanded(
@@ -262,6 +324,7 @@ class _TrailMaptaskState extends State<TrailMaptask> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
+                            // 'My Notes:' Text
                             const Text(
                               'My Notes:',
                               style: TextStyle(
@@ -271,6 +334,7 @@ class _TrailMaptaskState extends State<TrailMaptask> {
                               ),
                             ),
 
+                            // Wrap everything in a deep blue border
                             Container(
                               decoration: BoxDecoration(
                                 border: Border.all(width: 2, color: const Color.fromARGB(255, 34, 0, 126)),
@@ -278,12 +342,19 @@ class _TrailMaptaskState extends State<TrailMaptask> {
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(8),
+
+                                // The TextField to let the user enter any notes they have for this task
                                 child: TextField(
                                   decoration: null,
+
+                                  // This lets the user hit 'enter' to go to a new line
                                   keyboardType: TextInputType.multiline,
                                   minLines: 1,
-                                  maxLines: null,
+                                  maxLines: 100, // If the notes go above a hundred lines, they should probably be stored in a separate file
                                   controller: notesController,
+
+                                  // Update the local TextField content variable (notesController.text)
+                                  // AND the global MyAppState variable to keep track of the user's notes for this task
                                   onChanged: (String contents) {
                                     notesController.text = contents;
                                     appState.selectedTrail.categories[widget.trailMapIndex].tasks[widget.trailMapSubindex].notes = contents;
