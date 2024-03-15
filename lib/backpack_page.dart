@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'package:learning_backpack/utilities.dart';
 
@@ -162,43 +161,6 @@ class _BackpackPageState extends State<BackpackPage>{
                               ),
                             ),
                           ),
-<<<<<<< Updated upstream
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              IconButton(onPressed: () {openTheFile(file.name);}, icon: const Icon(Icons.open_in_new_rounded), iconSize: 35, color: Colors.white),
-                              IconButton(
-                                onPressed: () async {
-                                    final theDelete = await showDialog<bool>(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: const Text('Confirm Deletion'),
-                                        content: const Text('Are you sure you want to delete this file?'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () => Navigator.pop(context, false),
-                                            child: const Text('Cancel'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () => Navigator.pop(context, true),
-                                            child: const Text('Delete'),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-
-                                    if (theDelete == true) {
-                                      // Assuming you have a function to delete the file
-                                      deletingFile(file.name);
-                                    }
-                                },
-                                icon: const Icon(Icons.delete),
-                                iconSize: 35,
-                                color: Colors.white,
-                                ),
-                            ],
-=======
-
                           Expanded(
                             flex: 2,
                             child: Center(
@@ -216,7 +178,6 @@ class _BackpackPageState extends State<BackpackPage>{
                                   ),
                                 ),
                               ),
->>>>>>> Stashed changes
                             ),
                           ),
 
@@ -227,7 +188,35 @@ class _BackpackPageState extends State<BackpackPage>{
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   IconButton(onPressed: () {openTheFile(file.name);}, icon: const Icon(Icons.open_in_new_rounded), iconSize: 28 * tileScale, color: Colors.white),
-                                  IconButton(onPressed: () {deletingFile(file.name);}, icon: const Icon(Icons.delete), iconSize: 28 * tileScale, color: Colors.white),
+                                  IconButton(
+                                    onPressed: () async {
+                                      final theDelete = await showDialog<bool>(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: const Text('Confirm Deletion'),
+                                          content: const Text('Are you sure you want to delete this file?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(context, false),
+                                              child: const Text('Cancel'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(context, true),
+                                              child: const Text('Delete'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+
+                                      if (theDelete == true) {
+                                        // Assuming you have a function to delete the file
+                                        deletingFile(file.name);
+                                      }
+                                    },
+                                    icon: const Icon(Icons.delete),
+                                    iconSize: 28 * tileScale,
+                                    color: Colors.white
+                                  ),
                                 ],
                                 ),
                             ),
@@ -239,7 +228,6 @@ class _BackpackPageState extends State<BackpackPage>{
                 ),
           )
         ],
-        
       ),
     );
   }
