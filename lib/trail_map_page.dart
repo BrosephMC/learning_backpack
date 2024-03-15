@@ -9,29 +9,24 @@ class TrailMapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var categoryTitles = appState.categoryTitles;
-    var numcategorys = appState.numcategorys;
-    var taskTitlesPercategory = appState.taskTitlesPercategory;
-    var tasksPercategory = appState.tasksPercategory;
-    var numDescriptionsPertask = appState.numDescriptionsPertask;
-    var taskDescriptionsPertask = appState.taskDescriptionsPertask;
+    var selectedTrail = appState.selectedTrail;
 
     return DefaultTabController(
       initialIndex: 0,
-      length: numcategorys,
+      length: selectedTrail.categories.length,
       child: Scaffold(
         appBar: AppBar(
-          title: const Padding(
-            padding: EdgeInsets.all(20.0),
+          title: Padding(
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Text(
-                  "Trail Title - 50% Done",
-                  style: TextStyle(fontSize: 20),
+                  "${selectedTrail.name} - 50%",
+                  style: const TextStyle(fontSize: 20),
                 ),
-                Padding(padding: EdgeInsets.all(5.0)),
-                LinearProgressIndicator(
+                const Padding(padding: EdgeInsets.all(5.0)),
+                const LinearProgressIndicator(
                   value: 0.5,
                   semanticsLabel: 'Linear progress indicator',
                 ),
@@ -42,27 +37,26 @@ class TrailMapPage extends StatelessWidget {
             isScrollable: true,
             tabAlignment: TabAlignment.center,
             tabs: <Widget>[
-              for (int i = 0; i < numcategorys; i++)
+              for (int i = 0; i < selectedTrail.categories.length; i++)
                 Tab(
-                  icon: getIconFromWord(categoryTitles[i]),
-                  child: Text(categoryTitles[i])
+                  icon: getIconFromWord(selectedTrail.categories[i].name),
+                  child: Text(selectedTrail.categories[i].name)
                 ),
             ],
           ),
         ),
         body: TabBarView(
           children: <Widget>[
-            for (int i = 0; i < numcategorys; i++)
+            for (int i = 0; i < selectedTrail.categories.length; i++)
               Center(
                 child: TrailMapcategory(
-                  title: categoryTitles[i],
+                  title: selectedTrail.categories[i].name,
                   children: <TrailMaptask>[
-                    for (int j = 0; j < tasksPercategory[i]; j++)
+                    for (int j = 0; j < selectedTrail.categories[i].tasks.length; j++)
                       TrailMaptask(
-                        title: taskTitlesPercategory[i][j],
+                        title: selectedTrail.categories[i].tasks[j].name,
                         descriptionList: <String>[
-                          for (int k = 0; k < numDescriptionsPertask[i][j]; k++)
-                            taskDescriptionsPertask[i][j][k],
+                          selectedTrail.categories[i].tasks[j].description
                         ],
                         trailMapIndex: i,
                         trailMapSubindex: j,
@@ -135,7 +129,7 @@ class _TrailMaptaskState extends State<TrailMaptask> {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
 
-    int selected = appState.trailMapSelected[widget.trailMapIndex][widget.trailMapSubindex];
+    int selected = appState.selectedTrail.categories[widget.trailMapIndex].tasks[widget.trailMapSubindex].status;
     const List<String> messages = [ 'Not Started', 'In Progress', 'Complete' ];
     final List<Color> colors =[ Colors.red, Colors.orange, Colors.lightGreen[700]! ];
     const List<double> opacities = [ 0.22, 0.25, 0.32 ];
@@ -175,7 +169,7 @@ class _TrailMaptaskState extends State<TrailMaptask> {
                     onPressed: () {
                       setState(() {
                         selected = i;
-                        appState.trailMapSelected[widget.trailMapIndex][widget.trailMapSubindex] = i;
+                        appState.selectedTrail.categories[widget.trailMapIndex].tasks[widget.trailMapSubindex].status = i;
                       });
                     },
                   )

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_backpack/utilities.dart';
 //#import 'dart:io';
 
 import 'package:provider/provider.dart';
@@ -30,91 +31,8 @@ class LearningBackpackApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => MyAppState()..setTrailMapFromList(
-        // [
-        //   [ 'Title 1', 'Task 1.1', 'Task 1.2', 'Task 1.3', 'Task 1.4', 'Task 1.5', 'Task 1.6' ],
-        //   [ 'Title 2', 'Task 2.1', 'Task 2.2', 'Task 2.3', 'Surprise, Task 2.7' ]
-        // ]
-        // readFromFile(p.join(Directory.current.path, 'assets', 'sample.txt')),
-        [
-          [ 
-            [ 'Language' ],
-            [
-                'Complete Duolingo course',
-                'Go to this link: duolingo.com/hereIsSomeLink',
-                'Complete up to Chapter 5',
-                'Here is some more lines'
-            ],
-            [
-                'Read [this book] on the language',
-                'Here is some additional info about the book',
-                'Idk what else to say'
-            ],
-          ],
-
-          [
-            [ 'Mission' ],
-            [
-              'Attend SIM conference',
-              'Go to this bi-annual SIM conference',
-              'Here is the date: [some date]',
-              'Here is the time: [some time]',
-              'Here is the address: [some address]'
-            ],
-            [
-              'Learn how to write newsletters',
-              'Watch this video: youtube.com/blahblah'
-            ],
-            [
-              'Find a host church',
-              'Find a host church (or multiple) to support you in your mission',
-              'Here is a helpful article for how to ask for support: somelink.com/somelink'
-            ],
-            [
-              'I need filler',
-              'Here\'s some filler',
-              'Here\'s some more',
-              'And some more',
-              'Filler',
-              'Filler',
-              'Filler'
-            ]
-          ],
-
-          [
-            [ 'Lipsum' ],
-            [
-              'Lorem ipsum',
-              'Lorem ipsum dolor sit amet',
-              'Consectetur adipiscing elit',
-              'Ut imperdiet ante mi, ac luctus dui ultrices id',
-              'Duis eu faucibus orci',
-              'Sed et sagittis est, id tempus purus'
-            ],
-            [
-              'Vestibulum gravida maximus scelerisque',
-              'Nullam accumsan luctus lectus, id aliquam odio blandit vel',
-              'Donec sollicitudin ipsum eget mauris gravida ullamcorper',
-              'Aenean imperdiet purus ac nibh iaculis, sit amet pharetra elit facilisis',
-              'Etiam ornare urna diam, ut aliquet lacus interdum id',
-              'Fusce eget aliquet nisl, in ultrices nulla',
-              'Praesent vel luctus turpis, id placerat ligula',
-              'Quisque sagittis odio nec erat malesuada iaculis'
-            ],
-            [
-              'AAAAAAAAA',
-              'AAA',
-              'AAA',
-              'AAA',
-              'AAA',
-              'AAA',
-              'AAA',
-              'AAA',
-              'AAA',
-              'AAA'
-            ]
-          ]
-        ]
+      create: (context) => MyAppState()..selectTrailMap(
+        parseJourneys("assets/sample2.txt")![0].trails[1]
       ),
       child: const MaterialApp(
         home: BottomNavigationBarExample(),

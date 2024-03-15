@@ -1,32 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
-//this will be removed
-List<List<String>> readFromFile(String filePath) {
-  var file = File(filePath);
-  var lines = file.readAsLinesSync();
-
-  List<List<String>> result = [];
-  List<String> currentList = [];
-
-  for (var line in lines) {
-    line = line.trimLeft();
-    if (line.isNotEmpty) {
-      currentList.add(line);
-    } else if (currentList.isNotEmpty) {
-      result.add(List.from(currentList));
-      currentList.clear();
-    }
-  }
-
-  if (currentList.isNotEmpty) {
-    result.add(List.from(currentList));
-  }
-
-  return result;
-}
-
-
 //
 // Journey, Trail, Category, Task Classes
 //
@@ -63,8 +37,9 @@ class Category {
 class Task {
   String name;
   String description;
+  int status;
 
-  Task(this.name, this.description);
+  Task(this.name, this.description, this.status);
 
   @override
   String toString() => 'Task(name: $name, description: $description)';
@@ -100,7 +75,7 @@ List<Journey>? parseJourneys(String filePath) {
       currentTrail!.categories.add(currentCategory);
     } else if (line.startsWith('   -')) {
       // Task
-      currentTask = Task(line.substring(4).trim(), "");
+      currentTask = Task(line.substring(4).trim(), "", 0);
       currentCategory!.tasks.add(currentTask);
     } else if (line.startsWith('    *')) {
       // Task Description
@@ -110,6 +85,7 @@ List<Journey>? parseJourneys(String filePath) {
     }
   }
 
+  // print(journeys);
   return journeys;
   } catch (e) {
     print("could not read from file");

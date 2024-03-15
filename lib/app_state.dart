@@ -1,70 +1,20 @@
+// import 'dart:js_util';
+
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
+import 'package:learning_backpack/utilities.dart';
 
-//1.1.#
+
 class MyAppState extends ChangeNotifier {
-  int numcategorys = 0;
-  List<int> tasksPercategory = [];
-  List< List<int> > numDescriptionsPertask = [ [] ];
-  List< List<int> > trailMapSelected = [ [] ];
-  List<String> categoryTitles = [];
-  List< List<String> > taskTitlesPercategory = [ [] ];
-  List< List< List<String> > > taskDescriptionsPertask = [ [ [] ] ];
-
-  List<PlatformFile> files = [];
-
-  //1.1.0
-  void setTrailMapFromList(List< List< List<String> > > trailMapDesc) {
-    numcategorys = trailMapDesc.length;
-
-    //1.1.1
-    tasksPercategory = List<int>.generate(
-      numcategorys,
-      (int index) => trailMapDesc[index].length - 1
-    );
-
-    //1.1.2
-    categoryTitles = List<String>.generate(
-      numcategorys,
-      (int index) => trailMapDesc[index][0][0]
-    );
-
-    //1.1.3
-    taskTitlesPercategory = List< List<String> >.generate(
-      numcategorys,
-      (int outIndex) => List<String>.generate(
-        tasksPercategory[outIndex],
-        (int inIndex) => trailMapDesc[outIndex][inIndex + 1][0]
-      )
-    );
-
-    //1.1.4
-    numDescriptionsPertask = List< List<int> >.generate(
-      numcategorys,
-      (int categoryIndex) => List<int>.generate(
-        tasksPercategory[categoryIndex],
-        (int taskIndex) => trailMapDesc[categoryIndex][taskIndex + 1].length - 1
-      )
-    );
-
-    //1.1.5
-    taskDescriptionsPertask = List< List< List<String> > >.generate(
-      numcategorys,
-      (int categoryIndex) => List< List<String> >.generate(
-        tasksPercategory[categoryIndex],
-        (int taskIndex) => List<String>.generate(
-          numDescriptionsPertask[categoryIndex][taskIndex],
-          (int taskDescIndex) => trailMapDesc[categoryIndex][taskIndex + 1][taskDescIndex + 1]
-        )
-      )
-    );
-
-    //1.1.6
-    trailMapSelected = List< List<int> >.generate(
-      numcategorys,
-      (int index) => List<int>.generate(tasksPercategory[index], (int index) => 0)
-    );
-
+  List<Journey> journeys = [];
+  Trail selectedTrail = Trail("title", []);
+  
+  void selectTrailMap(Trail trailParam){
+    selectedTrail = trailParam;
+    notifyListeners();
+  }
+  void loadJourneys(List<Journey> journeysParam){
+    journeys = journeysParam;
     notifyListeners();
   }
 }

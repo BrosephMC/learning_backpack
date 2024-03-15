@@ -7,6 +7,7 @@ $Internal
    -Complete MPD bootcamp
     *this is another description
    -Interview a support-raiser
+    *This is a description that is very long. I put in long descriptions so we can test our app and see how it handles a bunch of text.It doesn't have \n newlines though ->!@#$%
   >Communicating  with partners
    -RG “Social Media Standards” video
    -Subscribe/read missionary newsletters
