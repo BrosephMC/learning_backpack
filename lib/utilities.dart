@@ -87,7 +87,7 @@ List<Journey>? parseJourneys(String filePath) {
     }
   }
 
-  // print(journeys);
+   print(journeys);
   return journeys;
   } catch (e) {
     print("could not read from file");
