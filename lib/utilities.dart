@@ -99,32 +99,69 @@ List<Journey>? parseJourneys(String filePath) {
 //
 // Returns an Icon given a category, to be used for generating trail icons based on their name
 //
-Icon getIconFromWord(String category){
-  if(RegExp("food", caseSensitive: false).hasMatch(category)){
-    return const Icon(Icons.fastfood);
+Icon getIconFromWord(String phrase) {
+  var categories = [
+    {
+      'keywords' : <String>[ 'food' ],
+      'icon' : Icons.fastfood
+    },
+    {
+      'keywords' : <String>[ 'language', 'read', 'word', 'bible' ],
+      'icon' : Icons.menu_book
+    },
+    {
+      'keywords' : <String>[ 'travel', 'navigation' ],
+      'icon' : Icons.explore
+    },
+    {
+      'keywords' : <String>[ 'mission', 'world' ],
+      'icon' : Icons.public
+    },
+    {
+      'keywords' : <String>[ 'faith', 'church', 'spirit', 'holy' ],
+      'icon' : Icons.church
+    },
+    {
+      'keywords' : <String>[ 'people', 'person', 'commun', 'group', 'partner', 'corp', 'relat', 'fam' ],
+      'icon' : Icons.groups
+    },
+    {
+      'keywords' : <String>[ 'video', 'watch' ],
+      'icon' : Icons.ondemand_video
+    },
+    {
+      'keywords' : <String>[ 'finance', 'money', 'currency' ],
+      'icon' : Icons.attach_money
+    },
+    {
+      'keywords' : <String>[ 'video', 'watch' ],
+      'icon' : Icons.ondemand_video
+    },
+    {
+      'keywords' : <String>[ 'learn', 'school', 'teach' ],
+      'icon' : Icons.school
+    },
+    {
+      'keywords' : <String>[ 'plan', 'note', 'document', 'write' ],
+      'icon' : Icons.edit_note
+    },
+    {
+      'keywords' : <String>[ 'heal', 'safe', 'med' ],
+      'icon' : Icons.health_and_safety
+    },
+  ];
+  
+  // Check if we match any category, which gives us a category-specific icon
+  for (var category in categories) {
+    for (var keyword in category['keywords'] as List<String>) {
+      if(RegExp(keyword, caseSensitive: false).hasMatch(phrase)){
+        return Icon(category['icon'] as IconData);
+      }
+    }
   }
-  if(RegExp("language", caseSensitive: false).hasMatch(category)
-  || RegExp("read", caseSensitive: false).hasMatch(category)
-  || RegExp("word", caseSensitive: false).hasMatch(category)){
-    return const Icon(Icons.menu_book);
-  }
-  if(RegExp("navigation", caseSensitive: false).hasMatch(category)
-  || RegExp("travel", caseSensitive: false).hasMatch(category)){
-    return const Icon(Icons.explore);
-  }
-  if(RegExp("mission", caseSensitive: false).hasMatch(category)){
-    return const Icon(Icons.public);
-  }
-  if(RegExp("faith", caseSensitive: false).hasMatch(category)
-  || RegExp("church", caseSensitive: false).hasMatch(category)){
-    return const Icon(Icons.church);
-  }
-  if(RegExp("people", caseSensitive: false).hasMatch(category)){
-    return const Icon(Icons.person);
-  } else {
-    return const Icon(Icons.filter_hdr);
-    // return const Icon(Icons.forest);
-  }
+
+  // Default to mountains icon
+  return const Icon(Icons.filter_hdr);
 }
 
 
