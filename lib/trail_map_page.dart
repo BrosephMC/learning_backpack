@@ -56,9 +56,7 @@ class TrailMapPage extends StatelessWidget {
                     for (int j = 0; j < selectedTrail.categories[i].tasks.length; j++)
                       TrailMaptask(
                         title: selectedTrail.categories[i].tasks[j].name,
-                        descriptionList: <String>[
-                          selectedTrail.categories[i].tasks[j].description
-                        ],
+                        descriptionList: selectedTrail.categories[i].tasks[j].description,
                         trailMapIndex: i,
                         trailMapSubindex: j,
                       ),

@@ -32,7 +32,7 @@ class LearningBackpackApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => MyAppState()..loadJourneys(
-        parseJourneys("assets/sample2.txt")!
+        parseJourneys("assets/sample3.txt")!
       ),
       child: const SafeArea(
         child: MaterialApp(

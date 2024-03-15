@@ -37,7 +37,7 @@ class Category {
 
 class Task {
   String name;
-  String description;
+  List<String> description; // One line per element
   int status;
   String notes;
 
@@ -77,11 +77,11 @@ List<Journey>? parseJourneys(String filePath) {
       currentTrail!.categories.add(currentCategory);
     } else if (line.startsWith('   -')) {
       // Task
-      currentTask = Task(line.substring(4).trim(), "", 0, "");
+      currentTask = Task(line.substring(4).trim(), [], 0, "");
       currentCategory!.tasks.add(currentTask);
     } else if (line.startsWith('    *')) {
       // Task Description
-      currentTask!.description = line.substring(5).trim();
+      currentTask!.description.add(line.substring(5).trim());
     } else if (line.isEmpty) {
       journeys.add(currentJourney!);
     }
