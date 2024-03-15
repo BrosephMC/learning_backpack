@@ -2,6 +2,8 @@ import 'package:flutter/material.dart'; // Needed for widgets
 import 'dart:io'; // Needed for File class
 import 'dart:math'; // Needed for math functions like pow()
 
+
+
 //
 // Journey, Trail, Category, Task Classes
 // A Journey contains Trails, a Trail contains Categories, and so on
@@ -23,7 +25,7 @@ class Journey {
     for(var tr in trails){
       for(var c in tr.categories){
         for(var t in c.tasks){
-          if(t.status == 2){
+          if(t.status == 2){ // (0 = Not Started, 1 = In Progress, 2 = Completed)
             completed++;
           }
           total++;
@@ -53,7 +55,7 @@ class Trail {
     int total = 0;
     for(var c in categories){
       for(var t in c.tasks){
-        if(t.status == 2){
+        if(t.status == 2){ // (0 = Not Started, 1 = In Progress, 2 = Completed)
           completed++;
         }
         total++;
@@ -81,7 +83,7 @@ class Category {
     int completed = 0;
     int total = 0;
     for(var t in tasks){
-      if(t.status == 2){
+      if(t.status == 2){ // (0 = Not Started, 1 = In Progress, 2 = Completed)
         completed++;
       }
       total++;

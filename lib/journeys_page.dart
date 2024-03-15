@@ -1,7 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/material.dart'; // Needed for widgets
+import 'package:provider/provider.dart'; // Needed to watch MyAppState
+
+// Necessary modules from this project
 import 'package:learning_backpack/app_state.dart';
 import 'package:learning_backpack/utilities.dart';
+
+
 
 class JourneysPage extends StatefulWidget {
   const JourneysPage({super.key});
@@ -13,14 +17,11 @@ class JourneysPage extends StatefulWidget {
 class _JourneysPageState extends State<JourneysPage> {
   int _selectedIndex = 0;
   var journeys = [];
-  // var selectedTrail = Trail("title", []);
 
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     journeys = appState.journeys;
-    // selectedTrail = appState.selectedTrail;
-    // print("Journeys $journeys");
     print("selectedtrail journeys ${appState.selectedTrail}");
 
     return Scaffold(
@@ -37,7 +38,8 @@ class _JourneysPageState extends State<JourneysPage> {
             groupAlignment: 0.0, // Align items to the center
             leading: FloatingActionButton(
               onPressed: () {
-                // Add your onPressed code here!
+                // STUB
+                // Currently does nothing - ideally would allow adding a new Journey
               },
               tooltip: "Import new Journey WIP",
               child: const Icon(Icons.add),
@@ -51,7 +53,6 @@ class _JourneysPageState extends State<JourneysPage> {
         ],
       ),
     );
-    
   }
 
   List<NavigationRailDestination> _buildNavRailDestinations() {
