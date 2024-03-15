@@ -9,16 +9,16 @@ class TrailMapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var sectionTitles = appState.sectionTitles;
-    var numSections = appState.numSections;
-    var subsectionTitlesPerSection = appState.subsectionTitlesPerSection;
-    var subsectionsPerSection = appState.subsectionsPerSection;
-    var numDescriptionsPerSubsection = appState.numDescriptionsPerSubsection;
-    var subsectionDescriptionsPerSubsection = appState.subsectionDescriptionsPerSubsection;
+    var categoryTitles = appState.categoryTitles;
+    var numcategorys = appState.numcategorys;
+    var taskTitlesPercategory = appState.taskTitlesPercategory;
+    var tasksPercategory = appState.tasksPercategory;
+    var numDescriptionsPertask = appState.numDescriptionsPertask;
+    var taskDescriptionsPertask = appState.taskDescriptionsPertask;
 
     return DefaultTabController(
       initialIndex: 0,
-      length: numSections,
+      length: numcategorys,
       child: Scaffold(
         appBar: AppBar(
           title: const Padding(
@@ -42,27 +42,27 @@ class TrailMapPage extends StatelessWidget {
             isScrollable: true,
             tabAlignment: TabAlignment.center,
             tabs: <Widget>[
-              for (int i = 0; i < numSections; i++)
+              for (int i = 0; i < numcategorys; i++)
                 Tab(
-                  icon: getIconFromWord(sectionTitles[i]),
-                  child: Text(sectionTitles[i])
+                  icon: getIconFromWord(categoryTitles[i]),
+                  child: Text(categoryTitles[i])
                 ),
             ],
           ),
         ),
         body: TabBarView(
           children: <Widget>[
-            for (int i = 0; i < numSections; i++)
+            for (int i = 0; i < numcategorys; i++)
               Center(
-                child: TrailMapSection(
-                  title: sectionTitles[i],
-                  children: <TrailMapSubsection>[
-                    for (int j = 0; j < subsectionsPerSection[i]; j++)
-                      TrailMapSubsection(
-                        title: subsectionTitlesPerSection[i][j],
+                child: TrailMapcategory(
+                  title: categoryTitles[i],
+                  children: <TrailMaptask>[
+                    for (int j = 0; j < tasksPercategory[i]; j++)
+                      TrailMaptask(
+                        title: taskTitlesPercategory[i][j],
                         descriptionList: <String>[
-                          for (int k = 0; k < numDescriptionsPerSubsection[i][j]; k++)
-                            subsectionDescriptionsPerSubsection[i][j][k],
+                          for (int k = 0; k < numDescriptionsPertask[i][j]; k++)
+                            taskDescriptionsPertask[i][j][k],
                         ],
                         trailMapIndex: i,
                         trailMapSubindex: j,
@@ -77,11 +77,11 @@ class TrailMapPage extends StatelessWidget {
   }
 }
 
-class TrailMapSection extends StatelessWidget {
+class TrailMapcategory extends StatelessWidget {
   final String title;
-  final List<TrailMapSubsection> children;
+  final List<TrailMaptask> children;
 
-  const TrailMapSection({
+  const TrailMapcategory({
     super.key,
     required this.title,
     required this.children
@@ -112,13 +112,13 @@ class TrailMapSection extends StatelessWidget {
   }
 }
 
-class TrailMapSubsection extends StatefulWidget {
+class TrailMaptask extends StatefulWidget {
   final String title;
   final List<String> descriptionList; // One element per line
   final int trailMapIndex;
   final int trailMapSubindex;
 
-  const TrailMapSubsection({
+  const TrailMaptask({
     super.key,
     required this.title,
     required this.descriptionList,
@@ -127,10 +127,10 @@ class TrailMapSubsection extends StatefulWidget {
   });
 
   @override
-  State<TrailMapSubsection> createState() => _TrailMapSubsectionState();
+  State<TrailMaptask> createState() => _TrailMaptaskState();
 }
 
-class _TrailMapSubsectionState extends State<TrailMapSubsection> {
+class _TrailMaptaskState extends State<TrailMaptask> {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
