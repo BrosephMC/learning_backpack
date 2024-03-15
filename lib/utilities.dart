@@ -39,11 +39,12 @@ class Task {
   String name;
   String description;
   int status;
+  String notes;
 
-  Task(this.name, this.description, this.status);
+  Task(this.name, this.description, this.status, this.notes);
 
   @override
-  String toString() => 'Task(name: $name, description: $description)';
+  String toString() => 'Task(name: $name, description: $description, notes: $notes)';
 }
 
 
@@ -76,7 +77,7 @@ List<Journey>? parseJourneys(String filePath) {
       currentTrail!.categories.add(currentCategory);
     } else if (line.startsWith('   -')) {
       // Task
-      currentTask = Task(line.substring(4).trim(), "", 0);
+      currentTask = Task(line.substring(4).trim(), "", 0, "");
       currentCategory!.tasks.add(currentTask);
     } else if (line.startsWith('    *')) {
       // Task Description
