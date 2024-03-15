@@ -1,9 +1,8 @@
 This is a list of active bugs, organized by the order in which they were discovered. Update as necessary.
-Bugs are followed by the exact OS, version, and build affected
+Bugs are followed by the exact OS, version, and build affected:
 
-3/14/24:
-- The app automatically loads about 7 or so random files from the User's documents folder. 
-   ~This is likely because the path_provider package from dart queries the OS' default ApplicationDocuments folder 
-   ~Affected builds:
-	* Windows 11 Pro, Version 10.0.22631, Build 22631
-	*
+(Basic format):
+<Date found>
+	<First Bug Name>: <Bug description>
+	-<Affected OS, Version, and Build info>
+	
