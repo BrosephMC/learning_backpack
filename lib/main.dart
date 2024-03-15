@@ -34,8 +34,10 @@ class LearningBackpackApp extends StatelessWidget {
       create: (context) => MyAppState()..selectTrailMap(
         parseJourneys("assets/sample2.txt")![0].trails[1]
       ),
-      child: const MaterialApp(
-        home: BottomNavigationBarExample(),
+      child: const SafeArea(
+        child: MaterialApp(
+          home: BottomNavigationBarExample(),
+        ),
       ),
     );
   }
