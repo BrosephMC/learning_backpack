@@ -110,7 +110,7 @@ class _BottomNavigationBarExampleState extends State<BottomNavigationBarExample>
             tooltip: '',
           ),
           NavigationDestination(
-            icon: Icon(Icons.luggage),
+            icon: Icon(Icons.backpack),
             label: 'Backpack',
             tooltip: '',
           ),
