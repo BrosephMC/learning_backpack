@@ -6,6 +6,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path/path.dart';
 
 import 'package:learning_backpack/utilities.dart';
+import 'package:path_provider/path_provider.dart';
 
 
 class BackpackPage extends StatefulWidget{
@@ -245,8 +246,13 @@ class _BackpackPageState extends State<BackpackPage>{
   }
     //Obtain the Application Documents directory (where files will be stored, in the App's system-allocated, protected folders
   Future<String> get _localPath async {
-    //final directory = await getApplicationDocumentsDirectory();
-    final directory = await Directory('assets/app_storage').create(recursive: true);
+    var directory = Directory('');
+    if(Platform.isIOS || Platform.isAndroid){
+      directory = await getApplicationDocumentsDirectory();
+    }else{
+      directory = await Directory('assets/app_storage').create(recursive: true);
+    }
+    
     return directory.path;
   }
 
